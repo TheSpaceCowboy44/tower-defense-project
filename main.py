@@ -1,10 +1,10 @@
 import pygame
 from pygame.locals import *
-from enum import Enum
 import sys
-import random
+from enemy import Enemy_Type_1
+from environment import Environment
 
-from level_0 import Level
+from level_0 import Level, Level_0
 from constants import *
 from tower import Tower
 
@@ -19,7 +19,7 @@ class Player(pygame.sprite.Sprite):
         self.image.fill(WHITE)
         self.rect = self.image.get_rect(center=(x, y))
 
-    def update(self):
+    def update(self, e):
         pressed_keys = pygame.key.get_pressed()
         hasMoved = False
 
@@ -58,27 +58,6 @@ class Player(pygame.sprite.Sprite):
         if(self.rect.y > (SCREEN_HEIGHT-PLAYER_SIZE)):
             self.rect.y = SCREEN_HEIGHT-PLAYER_SIZE
 
-class Direction(Enum):
-    UP = 1
-    RIGHT = 2
-    DOWN = 3
-    LEFT = 4
-
-class Enemy_Type_1(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.Surface((SCREEN_WIDTH*0.02, SCREEN_WIDTH*0.02))
-        self.image.fill(RED)
-        self.rect = self.image.get_rect()
-        self.rect.x = random.randrange(SCREEN_WIDTH - self.rect.width)
-        self.rect.y = random.randrange(SCREEN_HEIGHT - self.rect.height)
-        self.direction = Direction.DOWN
-        self.speed = 1
-
-    def update(self):
-        if self.rect.y <= SCREEN_HEIGHT:
-            self.rect.y += self.speed
-
 # Function to spawn enemies
 def spawn_enemy():
     enemy = Enemy_Type_1()
@@ -98,11 +77,12 @@ enemies = pygame.sprite.Group()
 player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
 
 # Create initial towers
-level = Level(800, 600)
+level_0 = Level_0(800, 600)
+environment = Environment(level_0.enemies)
 tower1 = Tower(100, 100)
 tower2 = Tower(200, 100)
 towers.add(tower1, tower2)
-all_sprites.add(tower1, tower2, player, level)
+all_sprites.add(tower1, tower2, player, level_0)
 
 # Game loop
 running = True
@@ -115,7 +95,9 @@ while running:
 
     # Spawn enemies every ? seconds
     now = pygame.time.get_ticks()
-    if now - spawn_timer > 8000:
+    for enemy in enemies:
+        spawn_enemy()
+    if now - spawn_timer > 500:
         spawn_enemy()
         spawn_timer = now
 
@@ -132,7 +114,7 @@ while running:
     # Draw
     screen.fill(BLACK)
     all_sprites.draw(screen)
-    screen.blit(level.image, level.rect.topleft)  # Draw the level on top
+    screen.blit(level_0.image, level_0.rect.topleft)  # Draw the level on top
     pygame.display.flip()
 
     clock.tick(FPS)

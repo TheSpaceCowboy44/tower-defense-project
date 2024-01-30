@@ -1,2 +1,2 @@
 # TOWER DEFENSE GAME
-small PyGame game of a tower-defense-like game that I do for fun
+small game made with Pygame of a tower-defense-like game that I code for fun

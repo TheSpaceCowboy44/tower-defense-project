@@ -3,11 +3,6 @@ from pygame.locals import *
 from constants import *
 from tower import Tower
 
-BLOCK_SIZE = 20
-SCREEN_SIZE = 400
-SCREEN_WIDTH = SCREEN_SIZE
-SCREEN_HEIGHT = SCREEN_SIZE
-
 class Environment(pygame.sprite.Sprite):
     def __init__(self, enemies):
         super().__init__()
