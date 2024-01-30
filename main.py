@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+from enum import Enum
 import sys
 import random
 
@@ -76,22 +77,26 @@ class Tower(pygame.sprite.Sprite):
             circle_center = (self.rect.centerx, self.rect.centery)
             pygame.draw.circle(surface, GREEN, circle_center, circle_radius, 2)
 
+class Direction(Enum):
+    UP = 1
+    RIGHT = 2
+    DOWN = 3
+    LEFT = 4
 
 class Enemy_Type_1(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((SCREEN_WIDTH*0.04, SCREEN_WIDTH*0.04))
+        self.image = pygame.Surface((SCREEN_WIDTH*0.02, SCREEN_WIDTH*0.02))
         self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.rect.x = random.randrange(SCREEN_WIDTH - self.rect.width)
         self.rect.y = random.randrange(SCREEN_HEIGHT - self.rect.height)
+        self.direction = Direction.DOWN
         self.speed = 1
 
     def update(self):
-        self.rect.y += self.speed
-        if self.rect.y > SCREEN_HEIGHT:
-            self.rect.y = 0
-            self.rect.x = random.randrange(SCREEN_WIDTH - self.rect.width)
+        if self.rect.y <= SCREEN_HEIGHT:
+            self.rect.y += self.speed
 
 # Function to spawn enemies
 def spawn_enemy():
@@ -139,6 +144,7 @@ while running:
     collisions = pygame.sprite.groupcollide(enemies, towers, False, False)
     for enemy, tower in collisions.items():
         # Do something when an enemy collides with a tower
+        
         pass
 
     # Draw
