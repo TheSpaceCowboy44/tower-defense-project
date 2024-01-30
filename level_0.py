@@ -1,6 +1,8 @@
 import pygame
 from pygame.locals import *
 
+from enemy import Enemy_Type_1
+
 class Level_0(pygame.sprite.Sprite):
     def __init__(self, width, height):
         super().__init__()
@@ -10,7 +12,11 @@ class Level_0(pygame.sprite.Sprite):
         self.rect.y = (pygame.display.Info().current_h - height) // 2
         self.color = (253, 253, 253)
         self.gap_width = 100  # Adjust the gap width as needed
-        self.enemies = pygame.sprite.Group()
+        self.enemies = [
+            Enemy_Type_1(),
+            Enemy_Type_1(),
+            Enemy_Type_1()
+        ]
 
     def draw(self):
         # Fill the entire surface with a transparent color

@@ -4,7 +4,7 @@ import sys
 from enemy import Enemy_Type_1
 from environment import Environment
 
-from level_0 import Level, Level_0
+from level_0 import Level_0
 from constants import *
 from tower import Tower
 
@@ -19,7 +19,7 @@ class Player(pygame.sprite.Sprite):
         self.image.fill(WHITE)
         self.rect = self.image.get_rect(center=(x, y))
 
-    def update(self, e):
+    def update(self):
         pressed_keys = pygame.key.get_pressed()
         hasMoved = False
 
@@ -46,7 +46,7 @@ class Player(pygame.sprite.Sprite):
             hasMoved = False
         
         if pressed_keys[K_e]:
-            newTower = Tower(self.rect.x, self.rect.y)
+            print("pressed e")
     
     def checkWallCollision(self):
         if(self.rect.x <0):
@@ -59,8 +59,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.y = SCREEN_HEIGHT-PLAYER_SIZE
 
 # Function to spawn enemies
-def spawn_enemy():
-    enemy = Enemy_Type_1()
+def spawn_enemy(enemy):
     all_sprites.add(enemy)
     enemies.add(enemy)
 
@@ -78,6 +77,7 @@ player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
 
 # Create initial towers
 level_0 = Level_0(800, 600)
+enemies = level_0.enemies
 environment = Environment(level_0.enemies)
 tower1 = Tower(100, 100)
 tower2 = Tower(200, 100)
@@ -96,10 +96,9 @@ while running:
     # Spawn enemies every ? seconds
     now = pygame.time.get_ticks()
     for enemy in enemies:
-        spawn_enemy()
-    if now - spawn_timer > 500:
-        spawn_enemy()
-        spawn_timer = now
+        if now - spawn_timer > 500:
+            spawn_enemy(enemy)
+            spawn_timer = now
 
     # Update
     all_sprites.update()
