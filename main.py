@@ -4,24 +4,12 @@ from enum import Enum
 import sys
 import random
 
+from level_0 import Level
+from constants import *
+from tower import Tower
+
 # Initialize Pygame
 pygame.init()
-
-# Constants
-
-FPS = 60
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
-
-SCREEN_SIZE = 400
-SCREEN_WIDTH = SCREEN_SIZE
-SCREEN_HEIGHT = SCREEN_SIZE
-PLAYER_SIZE = SCREEN_WIDTH * 0.04
-TOWER_SIZE = SCREEN_WIDTH * 0.04
-ENEMY_SIZE = SCREEN_WIDTH * 0.03
 
 # Classes
 class Player(pygame.sprite.Sprite):
@@ -51,10 +39,15 @@ class Player(pygame.sprite.Sprite):
             self.rect.x += 5
             hasMoved = True
 
-        self.checkWallCollision()
+        if hasMoved:
+            self.checkWallCollision()
 
         if not any(pressed_keys):
             hasMoved = False
+        
+        if pressed_keys[K_e]:
+            newTower = Tower(self.rect.x, self.rect.y)
+    
     def checkWallCollision(self):
         if(self.rect.x <0):
             self.rect.x = 0
@@ -64,18 +57,6 @@ class Player(pygame.sprite.Sprite):
             self.rect.y = 0
         if(self.rect.y > (SCREEN_HEIGHT-PLAYER_SIZE)):
             self.rect.y = SCREEN_HEIGHT-PLAYER_SIZE
-
-class Tower(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        super().__init__()
-        self.image = pygame.Surface((TOWER_SIZE, TOWER_SIZE ))
-        self.image.fill(BLUE)
-        self.rect = self.image.get_rect(center=(x, y))
-    def draw(self, surface):
-        if self.rect.collidepoint(pygame.mouse.get_pos()):
-            circle_radius = min(self.rect.width, self.rect.height) // 2
-            circle_center = (self.rect.centerx, self.rect.centery)
-            pygame.draw.circle(surface, GREEN, circle_center, circle_radius, 2)
 
 class Direction(Enum):
     UP = 1
@@ -117,10 +98,11 @@ enemies = pygame.sprite.Group()
 player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
 
 # Create initial towers
+level = Level(800, 600)
 tower1 = Tower(100, 100)
 tower2 = Tower(200, 100)
 towers.add(tower1, tower2)
-all_sprites.add(tower1, tower2, player)
+all_sprites.add(tower1, tower2, player, level)
 
 # Game loop
 running = True
@@ -150,8 +132,9 @@ while running:
     # Draw
     screen.fill(BLACK)
     all_sprites.draw(screen)
-
+    screen.blit(level.image, level.rect.topleft)  # Draw the level on top
     pygame.display.flip()
+
     clock.tick(FPS)
 
 pygame.quit()
