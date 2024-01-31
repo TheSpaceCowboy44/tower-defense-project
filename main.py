@@ -1,10 +1,9 @@
 import pygame
 from pygame.locals import *
 import sys
-from enemy import Enemy_Type_1
 from environment import Environment
 
-from level_0 import Level_0
+from levels.level_0 import Level_0
 from constants import *
 from tower import Tower
 
@@ -58,11 +57,6 @@ class Player(pygame.sprite.Sprite):
         if(self.rect.y > (SCREEN_HEIGHT-PLAYER_SIZE)):
             self.rect.y = SCREEN_HEIGHT-PLAYER_SIZE
 
-# Function to spawn enemies
-def spawn_enemy(enemy):
-    all_sprites.add(enemy)
-    enemies.add(enemy)
-
 # Pygame setup
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Tower Defense Game")
@@ -71,13 +65,11 @@ clock = pygame.time.Clock()
 # Sprite groups
 all_sprites = pygame.sprite.Group()
 towers = pygame.sprite.Group()
-enemies = pygame.sprite.Group()
 
 player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
 
 # Create initial towers
 level_0 = Level_0(800, 600)
-enemies = level_0.enemies
 environment = Environment(level_0.enemies)
 tower1 = Tower(100, 100)
 tower2 = Tower(200, 100)
@@ -95,16 +87,16 @@ while running:
 
     # Spawn enemies every ? seconds
     now = pygame.time.get_ticks()
-    for enemy in enemies:
+    for enemy in level_0.enemies:
         if now - spawn_timer > 500:
-            spawn_enemy(enemy)
+            all_sprites.add(enemy)
             spawn_timer = now
 
     # Update
     all_sprites.update()
 
     # Check for collisions between enemies and towers
-    collisions = pygame.sprite.groupcollide(enemies, towers, False, False)
+    collisions = pygame.sprite.groupcollide(level_0.enemies, towers, False, False)
     for enemy, tower in collisions.items():
         # Do something when an enemy collides with a tower
         

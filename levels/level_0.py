@@ -12,11 +12,7 @@ class Level_0(pygame.sprite.Sprite):
         self.rect.y = (pygame.display.Info().current_h - height) // 2
         self.color = (253, 253, 253)
         self.gap_width = 100  # Adjust the gap width as needed
-        self.enemies = [
-            Enemy_Type_1(),
-            Enemy_Type_1(),
-            Enemy_Type_1()
-        ]
+        self.enemies = getEnemylist()
 
     def draw(self):
         # Fill the entire surface with a transparent color
@@ -29,3 +25,9 @@ class Level_0(pygame.sprite.Sprite):
         # Draw the left and right rectangles with the background color
         pygame.draw.rect(self.image, self.color, left_rect)
         pygame.draw.rect(self.image, self.color, right_rect)
+
+def getEnemylist():
+    enemies = pygame.sprite.Group()
+    enemy_list = [Enemy_Type_1() for _ in range(3)]
+    enemies.add(enemy_list)
+    return enemies
