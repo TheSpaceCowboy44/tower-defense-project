@@ -86,7 +86,6 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    # Spawn enemies every ? seconds
     now = pygame.time.get_ticks()
     for enemy in level_0.enemies:
         if now - spawn_timer > 1000:
@@ -99,7 +98,7 @@ while running:
 
     # Draw
     screen.fill(BLACK)
-    level_0.draw(screen, player)
+    level_0.draw(screen)
     all_sprites.draw(screen)
     screen.blit(level_0.image, level_0.rect.topleft)
 

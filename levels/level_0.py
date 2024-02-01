@@ -21,16 +21,16 @@ class Level_0(pygame.sprite.Sprite):
                 player.can_place_tower = True
             else:
                 player.can_place_tower = False
-        self.towers.update(self.enemies)
+        self.towers.update(self.enemies, player)
         self.enemies.update()
 
-    def draw(self, surface, player):
-        # Fill the entire surface with a transparent color
+    def draw(self, surface):
         self.image.fill((0, 0, 0, 0))
 
         for area_block in self.area_blocks:
             pygame.draw.rect(surface, area_block.color, area_block.rect)
-        self.towers.draw(surface, player)
+        for tower in self.towers:
+            tower.draw(surface)
     
     def isInTowerArea(self, player):
         tower_area_blocks = pygame.sprite.Group()

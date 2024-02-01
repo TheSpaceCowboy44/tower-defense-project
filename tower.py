@@ -11,15 +11,19 @@ class Tower(pygame.sprite.Sprite):
         self.image = pygame.Surface((TOWER_SIZE, TOWER_SIZE ))
         self.image.fill(BLUE)
         self.rect = self.image.get_rect(center=(x, y))
-    def update(self, enemies):
+        self.highlight_detection_circle = False
+    def update(self, enemies, player):
+        if(check_collision_circle(self, player, TOWER_1_DETECTION_RADIUS)):
+            self.highlight_detection_circle = True
+        else:
+            self.highlight_detection_circle = False
         if(check_collision_group_circle(self, enemies, TOWER_1_DETECTION_RADIUS)):
             bullet = TowerBullet(self)
             bullet.update()
-    def draw(self, surface, player):
-        if(check_collision_circle(self, player, TOWER_1_DETECTION_RADIUS)):
-            circle_radius = min(self.rect.width, self.rect.height) // 2
+    def draw(self, surface):
+        if self.highlight_detection_circle:
             circle_center = (self.rect.centerx, self.rect.centery)
-            pygame.draw.circle(surface, GREEN, circle_center, circle_radius, 2)
+            pygame.draw.circle(surface, GREEN, circle_center, TOWER_1_DETECTION_RADIUS, 2)
 
 
 class TowerBullet(pygame.sprite.Sprite):
