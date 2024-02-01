@@ -99,7 +99,7 @@ while running:
 
     # Draw
     screen.fill(BLACK)
-    level_0.draw(screen)
+    level_0.draw(screen, player)
     all_sprites.draw(screen)
     screen.blit(level_0.image, level_0.rect.topleft)
 

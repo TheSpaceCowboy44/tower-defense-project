@@ -3,7 +3,7 @@ import pygame
 from pygame.locals import *
 
 from constants import *
-from utils import check_collision_circle
+from utils import check_collision_circle, check_collision_group_circle
 
 class Tower(pygame.sprite.Sprite):
     def __init__(self, x, y):
@@ -12,14 +12,15 @@ class Tower(pygame.sprite.Sprite):
         self.image.fill(BLUE)
         self.rect = self.image.get_rect(center=(x, y))
     def update(self, enemies):
-        if(check_collision_circle(self, enemies, TOWER_1_DETECTION_RADIUS)):
+        if(check_collision_group_circle(self, enemies, TOWER_1_DETECTION_RADIUS)):
             bullet = TowerBullet(self)
             bullet.update()
-    def draw(self, surface):
-        if self.rect.collidepoint(pygame.mouse.get_pos()):
+    def draw(self, surface, player):
+        if(check_collision_circle(self, player, TOWER_1_DETECTION_RADIUS)):
             circle_radius = min(self.rect.width, self.rect.height) // 2
             circle_center = (self.rect.centerx, self.rect.centery)
             pygame.draw.circle(surface, GREEN, circle_center, circle_radius, 2)
+
 
 class TowerBullet(pygame.sprite.Sprite):
     def __init__(self, tower):

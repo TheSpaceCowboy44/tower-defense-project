@@ -24,12 +24,13 @@ class Level_0(pygame.sprite.Sprite):
         self.towers.update(self.enemies)
         self.enemies.update()
 
-    def draw(self, surface):
+    def draw(self, surface, player):
         # Fill the entire surface with a transparent color
         self.image.fill((0, 0, 0, 0))
 
         for area_block in self.area_blocks:
             pygame.draw.rect(surface, area_block.color, area_block.rect)
+        self.towers.draw(surface, player)
     
     def isInTowerArea(self, player):
         tower_area_blocks = pygame.sprite.Group()

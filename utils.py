@@ -17,7 +17,7 @@ def MakeHud(font, screen, enemies, towers_to_build):
     hud_text2 = font.render(text2, True, WHITE)
     screen.blit(hud_text2, (10, 30))
 
-def check_collision_circle(sprite, group, radius):
+def check_collision_group_circle(sprite, group, radius):
     sprite_rect = sprite.rect
     for other_sprite in group:
         dx = sprite_rect.centerx - other_sprite.rect.centerx
@@ -25,4 +25,13 @@ def check_collision_circle(sprite, group, radius):
         distance = math.sqrt(dx**2 + dy**2)
         if distance < radius + sprite_rect.width / 2 + other_sprite.rect.width / 2:
             return True
+    return False
+
+def check_collision_circle(sprite1, sprite2, radius):
+    sprite_rect = sprite1.rect
+    dx = sprite_rect.centerx - sprite2.rect.centerx
+    dy = sprite_rect.centery - sprite2.rect.centery
+    distance = math.sqrt(dx**2 + dy**2)
+    if distance < radius + sprite_rect.width / 2 + sprite2.rect.width / 2:
+        return True
     return False
