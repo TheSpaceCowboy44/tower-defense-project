@@ -47,8 +47,8 @@ class Player(pygame.sprite.Sprite):
         
         if pressed_keys[K_e] and self.can_place_tower:
             new_tower = Tower(player.rect.centerx, player.rect.centery)
-            towers.add(new_tower)
             all_sprites.add(new_tower)
+            level_0.towers.add(new_tower)
             level_0.towers_to_build -= 1
             self.can_place_tower = False
     
@@ -71,11 +71,9 @@ font = pygame.font.Font(None, 22)
 
 # Sprite groups
 all_sprites = pygame.sprite.Group()
-towers = pygame.sprite.Group()
-
 player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
 
-# Create initial towers
+# Create level
 level_0 = Level_0(SCREEN_WIDTH, SCREEN_HEIGHT)
 all_sprites.add(player)
 
@@ -96,13 +94,8 @@ while running:
             spawn_timer = now
 
     # Update
-    player_towers_collisions = pygame.sprite.spritecollide(player, towers, False)
-    if(level_0.towers_to_build > 0):
-        if(len(player_towers_collisions) == 0) and level_0.isInTowerArea(player) and not level_0.isInEnemyArea(player):
-            player.can_place_tower = True
-        else:
-            player.can_place_tower = False
-    all_sprites.update()
+    level_0.update(player)
+    player.update()
 
     # Draw
     screen.fill(BLACK)

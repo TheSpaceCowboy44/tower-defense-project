@@ -9,9 +9,20 @@ class Level_0(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = (pygame.display.Info().current_w - width) // 2
         self.rect.y = (pygame.display.Info().current_h - height) // 2
+        self.towers = pygame.sprite.Group()
         self.enemies = getEnemylist()
         self.area_blocks = getAreaBlocks()
         self.towers_to_build = 3
+
+    def update(self,player):
+        player_towers_collisions = pygame.sprite.spritecollide(player, self.towers, False)
+        if(self.towers_to_build > 0):
+            if(len(player_towers_collisions) == 0) and self.isInTowerArea(player) and not self.isInEnemyArea(player):
+                player.can_place_tower = True
+            else:
+                player.can_place_tower = False
+        self.towers.update(self.enemies)
+        self.enemies.update()
 
     def draw(self, surface):
         # Fill the entire surface with a transparent color
