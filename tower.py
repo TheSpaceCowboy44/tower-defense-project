@@ -12,14 +12,15 @@ class Tower(pygame.sprite.Sprite):
         self.image.fill(BLUE)
         self.rect = self.image.get_rect(center=(x, y))
         self.highlight_detection_circle = False
+        self.bullet = None
     def update(self, enemies, player):
         if(check_collision_circle(self, player, TOWER_1_DETECTION_RADIUS)):
             self.highlight_detection_circle = True
         else:
             self.highlight_detection_circle = False
         if(check_collision_group_circle(self, enemies, TOWER_1_DETECTION_RADIUS)):
-            bullet = TowerBullet(self)
-            bullet.update()
+            self.bullet = TowerBullet(self)
+            self.bullet.update()
     def draw(self, surface):
         if self.highlight_detection_circle:
             circle_center = (self.rect.centerx, self.rect.centery)
@@ -29,17 +30,18 @@ class Tower(pygame.sprite.Sprite):
 class TowerBullet(pygame.sprite.Sprite):
     def __init__(self, tower):
         super().__init__()
-        self.rect = pygame.Rect(tower.rect.x, tower.rect.y, 1, 4)
+        self.image = pygame.Surface((3,10))
+        self.image.fill(TOWER_1_BULLET_COLOR)
+        self.rect = self.image.get_rect(center=(tower.centerx, tower.centery))
         self.position = pygame.math.Vector2(tower.rect.x, tower.rect.y)
         self.velocity = pygame.math.Vector2(0, 0)
         self.angle = random.randrange(0,359)
+        self.move_timer = pygame.time.get_ticks() + 5000
         self.speed = 5
-        self.move_timer = pygame.time.get_ticks() + 2000
     def update(self):
         now = pygame.time.get_ticks()
         if now < self.move_timer:
             self.velocity.from_polar((self.speed, -self.angle))
             self.position += self.velocity
             self.rect.center = (int(self.position.x), int(self.position.y))
-    def draw(self, surface):
-        pygame.draw.ellipse(surface, ORANGE_LIGHT, self.rect, width=0)
+            self.image = pygame.transform.rotate(self.image, self.angle)
