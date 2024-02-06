@@ -13,6 +13,7 @@ class Level_0(pygame.sprite.Sprite):
         self.enemies = getEnemylist()
         self.area_blocks = getAreaBlocks()
         self.towers_to_build = 3
+        self.health = 100
 
     def update(self,player):
         player_towers_collisions = pygame.sprite.spritecollide(player, self.towers, False)

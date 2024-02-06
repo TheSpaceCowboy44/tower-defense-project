@@ -24,7 +24,7 @@ def check_collision_group_circle(sprite, group, radius):
         dy = sprite_rect.centery - other_sprite.rect.centery
         distance = math.sqrt(dx**2 + dy**2)
         if distance < radius + sprite_rect.width / 2 + other_sprite.rect.width / 2:
-            return True
+            return other_sprite
     return False
 
 def check_collision_circle(sprite1, sprite2, radius):
@@ -35,3 +35,16 @@ def check_collision_circle(sprite1, sprite2, radius):
     if distance < radius + sprite_rect.width / 2 + sprite2.rect.width / 2:
         return True
     return False
+
+def calculer_angle(x1, y1, x2, y2):
+    # Calculer les différences entre les coordonnées
+    delta_x = x2 - x1
+    delta_y = y2 - y1
+
+    # Calculer l'angle en radians
+    angle_radians = math.atan2(delta_y, delta_x)
+
+    # Convertir l'angle en degrés
+    angle_degrees = math.degrees(angle_radians)
+
+    return angle_degrees
