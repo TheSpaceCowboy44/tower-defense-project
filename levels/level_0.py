@@ -32,6 +32,7 @@ class Level_0(pygame.sprite.Sprite):
                 addEnemy(self)
                 self.enemy_spawn_timer = now
         self.enemies.update()
+        player.update(self)
 
     def draw(self, surface):
         for area_block in self.area_blocks:
@@ -39,6 +40,7 @@ class Level_0(pygame.sprite.Sprite):
         for tower in self.towers:
             tower.draw(surface)
         self.enemies.draw(surface)
+        self.towers.draw(surface)
     
     def isInTowerArea(self, player):
         tower_area_blocks = pygame.sprite.Group()
