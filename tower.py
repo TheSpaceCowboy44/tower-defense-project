@@ -12,7 +12,7 @@ class Tower(pygame.sprite.Sprite):
         self.image.fill(BLUE)
         self.rect = self.image.get_rect(center=(x, y))
         self.highlight_detection_circle = False
-        self.bullet_images = [pygame.Surface((3, 10))]
+        self.bullet_images = [pygame.Surface((2, 8))]
         self.bullets = pygame.sprite.Group()
         self.spawn_bullet_timer = pygame.time.get_ticks() + 1000
 
@@ -49,9 +49,9 @@ class TowerBullet(pygame.sprite.Sprite):
         super().__init__()
         self.original_image = tower.bullet_images[0]
         self.image = pygame.transform.rotate(self.original_image, -angle)
-        self.image.fill(ORANGE_LIGHT)
+        self.image.fill(YELLOW_2)
         self.rect = self.image.get_rect(center=(tower.rect.centerx, tower.rect.centery))
-        self.position = pygame.math.Vector2(tower.rect.x, tower.rect.y)
+        self.position = pygame.math.Vector2(tower.rect.centerx, tower.rect.centery)
         self.velocity = pygame.math.Vector2(0, 0)
         self.shooting_angle = angle
         self.move_timer = pygame.time.get_ticks() + 2000

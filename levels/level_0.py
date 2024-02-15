@@ -1,3 +1,4 @@
+import random
 import pygame
 from pygame.locals import *
 from enemy import *
@@ -6,14 +7,16 @@ class Level_0(pygame.sprite.Sprite):
     def __init__(self, width, height):
         super().__init__()
         self.image = pygame.Surface((width, height), pygame.SRCALPHA)
+        self.image.fill((0, 0, 0, 0))
         self.rect = self.image.get_rect()
         self.rect.x = (pygame.display.Info().current_w - width) // 2
         self.rect.y = (pygame.display.Info().current_h - height) // 2
         self.towers = pygame.sprite.Group()
-        self.enemies = getEnemylist()
+        self.enemies = pygame.sprite.Group()
         self.area_blocks = getAreaBlocks()
         self.towers_to_build = 3
         self.health = 100
+        self.enemy_spawn_timer = pygame.time.get_ticks()
 
     def update(self,player):
         player_towers_collisions = pygame.sprite.spritecollide(player, self.towers, False)
@@ -23,15 +26,19 @@ class Level_0(pygame.sprite.Sprite):
             else:
                 player.can_place_tower = False
         self.towers.update(self.enemies, player)
+        if(len(self.enemies) < 3):
+            now = pygame.time.get_ticks()
+            if now - self.enemy_spawn_timer > 2000:
+                addEnemy(self)
+                self.enemy_spawn_timer = now
         self.enemies.update()
 
     def draw(self, surface):
-        self.image.fill((0, 0, 0, 0))
-
         for area_block in self.area_blocks:
             pygame.draw.rect(surface, area_block.color, area_block.rect)
         for tower in self.towers:
             tower.draw(surface)
+        self.enemies.draw(surface)
     
     def isInTowerArea(self, player):
         tower_area_blocks = pygame.sprite.Group()
@@ -49,13 +56,12 @@ class Level_0(pygame.sprite.Sprite):
         player_blocks_collisions = pygame.sprite.spritecollide(player, enemy_area_blocks, False)
         return len(player_blocks_collisions) > 0
 
-def getEnemylist():
-    enemies = pygame.sprite.Group()
-    for i in range(3):
-        spawn_x = random.randint(SCREEN_WIDTH/2-SMALL_CORRIDOR_GAP, SCREEN_WIDTH/2+SMALL_CORRIDOR_GAP)
-        enemy_sprite = Enemy_Type_1(spawn_x, 0)
-        enemies.add(enemy_sprite)
-    return enemies
+def addEnemy(self):
+    x_start_boundary = SCREEN_WIDTH/2-SMALL_CORRIDOR_GAP + SCREEN_WIDTH*0.02
+    x_end_boundary = SCREEN_WIDTH/2+SMALL_CORRIDOR_GAP - SCREEN_WIDTH*0.04
+    spawn_x = random.randint(x_start_boundary, x_end_boundary)
+    enemy_sprite = Enemy_Type_1(spawn_x, -200)
+    self.enemies.add(enemy_sprite)
 
 def getAreaBlocks():
     area_blocks = pygame.sprite.Group()
@@ -65,6 +71,9 @@ def getAreaBlocks():
     center_block = AreaBlock(center_rect, "enemy_area", NOTVERYBLACK1)
     left_block = AreaBlock(left_rect, "tower_area", NOTVERYBLACK2)
     right_block = AreaBlock(right_rect, "tower_area", NOTVERYBLACK2)
+    # center_block = AreaBlock(center_rect, "enemy_area", GREEN_GRASS_DARK)
+    # left_block = AreaBlock(left_rect, "tower_area", GREEN_GRASS_LIGHT)
+    # right_block = AreaBlock(right_rect, "tower_area", GREEN_GRASS_LIGHT)
     area_blocks.add(left_block,right_block, center_block)
     return area_blocks
 

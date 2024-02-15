@@ -79,7 +79,6 @@ all_sprites.add(player)
 
 # Game loop
 running = True
-spawn_timer = pygame.time.get_ticks()
 
 while running:
     for event in pygame.event.get():
@@ -87,10 +86,6 @@ while running:
             running = False
 
     now = pygame.time.get_ticks()
-    for enemy in level_0.enemies:
-        if now - spawn_timer > 1000:
-            all_sprites.add(enemy)
-            spawn_timer = now
 
     # Update
     level_0.update(player)
