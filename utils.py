@@ -1,5 +1,7 @@
 from enum import Enum
 import math
+import pygame
+from pygame.locals import *
 
 from constants import *
 
@@ -48,3 +50,8 @@ def calculer_angle(x1, y1, x2, y2):
     angle_degrees = math.degrees(angle_radians)
 
     return angle_degrees
+
+def blitRotateCenter(surf, image, topleft, angle):
+    rotated_image = pygame.transform.rotate(image, angle)
+    new_rect = rotated_image.get_rect(center = image.get_rect(topleft = topleft).center)
+    surf.blit(rotated_image, new_rect)
