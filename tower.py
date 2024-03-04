@@ -15,6 +15,7 @@ class Tower(pygame.sprite.Sprite):
         self.bullet_images = [pygame.Surface((2, 8))]
         self.bullets = pygame.sprite.Group()
         self.spawn_bullet_timer = pygame.time.get_ticks() + 1000
+        self.bullet_damage = TOWER_1_BULLET_DAMAGE
 
     def update(self, enemies, player):
         now = pygame.time.get_ticks()
@@ -56,6 +57,7 @@ class TowerBullet(pygame.sprite.Sprite):
         self.shooting_angle = angle
         self.move_timer = pygame.time.get_ticks() + 2000
         self.speed = 8
+        self.bullet_damage = tower.bullet_damage
 
     def update(self):
         now = pygame.time.get_ticks()

@@ -31,6 +31,8 @@ class Level_0(pygame.sprite.Sprite):
             if now - self.enemy_spawn_timer > 2000:
                 addEnemy(self)
                 self.enemy_spawn_timer = now
+        for tower in self.towers:
+            self.checkBulletCollision(tower.bullets, self.enemies)
         self.enemies.update()
         player.update(self)
 
@@ -42,21 +44,36 @@ class Level_0(pygame.sprite.Sprite):
         self.enemies.draw(surface)
         self.towers.draw(surface)
     
-    def isInTowerArea(self, player):
-        tower_area_blocks = pygame.sprite.Group()
-        for area_block in self.area_blocks:
-            if(area_block.type == "tower_area"):
-                tower_area_blocks.add(area_block)
-        player_blocks_collisions = pygame.sprite.spritecollide(player, tower_area_blocks, False)
-        return len(player_blocks_collisions) > 0
-    
-    def isInEnemyArea(self, player):
+    def getEnemyAreaBlocks(self):
         enemy_area_blocks = pygame.sprite.Group()
         for area_block in self.area_blocks:
             if(area_block.type == "enemy_area"):
                 enemy_area_blocks.add(area_block)
-        player_blocks_collisions = pygame.sprite.spritecollide(player, enemy_area_blocks, False)
-        return len(player_blocks_collisions) > 0
+        return enemy_area_blocks
+    
+    def getTowerAreaBlocks(self):
+        tower_area_blocks = pygame.sprite.Group()
+        for area_block in self.area_blocks:
+            if(area_block.type == "tower_area"):
+                tower_area_blocks.add(area_block)
+        return tower_area_blocks
+
+    def isInTowerArea(self, sprite):
+        tower_area_blocks = self.getTowerAreaBlocks()
+        sprite_blocks_collisions = pygame.sprite.spritecollide(sprite, tower_area_blocks, False)
+        return len(sprite_blocks_collisions) > 0
+    
+    def isInEnemyArea(self, sprite):
+        enemy_area_blocks = self.getEnemyAreaBlocks()
+        sprite_blocks_collisions = pygame.sprite.spritecollide(sprite, enemy_area_blocks, False)
+        return len(sprite_blocks_collisions) > 0
+    
+    def checkBulletCollision(self, bullets, enemies):
+        stick = pygame.sprite.groupcollide(bullets, enemies, False, False, pygame.sprite.collide_mask)
+
+        for bullet, enemyList in stick.items():
+            enemyList[0].health =- bullet.bullet_damage
+            bullet.kill()
 
 def addEnemy(self):
     x_start_boundary = SCREEN_WIDTH/2-SMALL_CORRIDOR_GAP + SCREEN_WIDTH*0.02

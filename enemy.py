@@ -9,12 +9,13 @@ class Enemy(pygame.sprite.Sprite):
         self.image = pygame.Surface((SCREEN_WIDTH*0.05, SCREEN_WIDTH*0.05))
         self.image.fill(RED)
         self.direction = Direction.DOWN
+        self.health = 1
     def update(self):
         if self.rect.y <= SCREEN_HEIGHT:
             self.rect.y += self.speed
+        
     def draw(self, surface):
         surface.blit(self.image, self.rect.topleft)
-
 
 
 class Enemy_Type_1(Enemy):
@@ -26,5 +27,6 @@ class Enemy_Type_1(Enemy):
         self.speed = 1
         self.rect.x = spawn_x
         self.rect.y = spawn_y
+        self.health = 10
     def draw(self, surface):
         surface.blit(self.image, self.rect.topleft)
