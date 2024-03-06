@@ -6,7 +6,7 @@ from fake_block import FakeBlock
 from levels.level_0 import Level_0
 from constants import *
 from player import Player
-from utils import MakeHud
+from hud import MakeHud
 
 # Initialize Pygame
 pygame.init()

@@ -27,6 +27,7 @@ class Enemy_Type_1(Enemy):
         self.speed = 1
         self.rect.x = spawn_x
         self.rect.y = spawn_y
-        self.health = 10
+        self.health = ENEMY_TYPE_1_HEALTH
+        self.max_health = ENEMY_TYPE_1_HEALTH
     def draw(self, surface):
         surface.blit(self.image, self.rect.topleft)

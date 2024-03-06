@@ -72,8 +72,10 @@ class Level_0(pygame.sprite.Sprite):
         stick = pygame.sprite.groupcollide(bullets, enemies, False, False, pygame.sprite.collide_mask)
 
         for bullet, enemyList in stick.items():
-            enemyList[0].health =- bullet.bullet_damage
+            enemyList[0].health = enemyList[0].health - bullet.bullet_damage
             bullet.kill()
+            if(enemyList[0].health <= 0):
+                enemyList[0].kill()
 
 def addEnemy(self):
     x_start_boundary = SCREEN_WIDTH/2-SMALL_CORRIDOR_GAP + SCREEN_WIDTH*0.02
