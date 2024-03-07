@@ -19,3 +19,4 @@ def DisplayEnemyHealthBar(screen, enemies):
         rect.centerx = enemy.rect.centerx
         rect.y =+ enemy.rect.y - 8
         pygame.draw.rect(screen, GREEN, rect)
+        

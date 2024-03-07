@@ -1,0 +1,18 @@
+{
+    "displayName": "Niveau 0 - Tuto",
+    "enemySpawnData":
+    [
+        {
+            "enemyType": 1,
+            "spawnWaitTime": 5000
+        },
+        {
+            "enemyType": 1,
+            "spawnWaitTime": 2000
+        },
+        {
+            "enemyType": 1,
+            "spawnWaitTime": 3000
+        }
+    ]
+}

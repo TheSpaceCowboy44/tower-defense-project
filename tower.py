@@ -21,7 +21,8 @@ class Tower(pygame.sprite.Sprite):
         now = pygame.time.get_ticks()
         
         enemy_detected = check_collision_group_circle(self, enemies, TOWER_1_DETECTION_RADIUS)
-        if check_collision_circle(self, player, TOWER_1_DETECTION_RADIUS) or enemy_detected != False:
+        #player_detected = check_collision_circle(self, player, TOWER_1_DETECTION_RADIUS)
+        if enemy_detected != False:
             self.highlight_detection_circle = True
             if enemy_detected != False and now > self.spawn_bullet_timer:
                 bullet_angle = calculer_angle(self.rect.x, self.rect.y, enemy_detected.rect.x, enemy_detected.rect.y)

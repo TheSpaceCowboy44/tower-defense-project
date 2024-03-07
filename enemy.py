@@ -24,10 +24,41 @@ class Enemy_Type_1(Enemy):
         self.image = pygame.Surface((SCREEN_WIDTH*0.02, SCREEN_WIDTH*0.02))
         self.image.fill(RED)
         self.rect = self.image.get_rect()
-        self.speed = 1
+        self.speed = 0.8
         self.rect.x = spawn_x
         self.rect.y = spawn_y
         self.health = ENEMY_TYPE_1_HEALTH
         self.max_health = ENEMY_TYPE_1_HEALTH
+        self.damage = ENEMY_TYPE_1_DAMAGE
+    def draw(self, surface):
+        surface.blit(self.image, self.rect.topleft)
+
+class Enemy_Type_2(Enemy):
+    def __init__(self, spawn_x, spawn_y):
+        super().__init__()
+        self.image = pygame.Surface((SCREEN_WIDTH*0.03, SCREEN_WIDTH*0.03))
+        self.image.fill(RED)
+        self.rect = self.image.get_rect()
+        self.speed = 1
+        self.rect.x = spawn_x
+        self.rect.y = spawn_y
+        self.health = ENEMY_TYPE_2_HEALTH
+        self.max_health = ENEMY_TYPE_2_HEALTH
+        self.damage = ENEMY_TYPE_2_DAMAGE
+    def draw(self, surface):
+        surface.blit(self.image, self.rect.topleft)
+
+class Enemy_Type_3(Enemy):
+    def __init__(self, spawn_x, spawn_y):
+        super().__init__()
+        self.image = pygame.Surface((SCREEN_WIDTH*0.04, SCREEN_WIDTH*0.04))
+        self.image.fill(RED)
+        self.rect = self.image.get_rect()
+        self.speed = 1.3
+        self.rect.x = spawn_x
+        self.rect.y = spawn_y
+        self.health = ENEMY_TYPE_3_HEALTH
+        self.max_health = ENEMY_TYPE_3_HEALTH
+        self.damage = ENEMY_TYPE_3_DAMAGE
     def draw(self, surface):
         surface.blit(self.image, self.rect.topleft)
