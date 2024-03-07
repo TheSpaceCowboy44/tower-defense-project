@@ -44,7 +44,7 @@ while running:
     fake_block.draw(screen)
     screen.blit(level_0.image, level_0.rect.topleft)
 
-    MakeHud(font, screen, level_0.enemies, level_0.towers_to_build)
+    MakeHud(font, screen, level_0.enemies, level_0.towers_to_build, level_0.health)
 
     pygame.display.flip()
 

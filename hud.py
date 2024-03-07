@@ -2,13 +2,19 @@ import pygame
 from pygame.locals import *
 from constants import *
 
-def MakeHud(font, screen, enemies, towers_to_build):
-    text = f"Enemies: {len(enemies)}"
-    hud_text = font.render(text, True, WHITE)
-    screen.blit(hud_text, (10, 10))
-    text2 = f"Towers: {towers_to_build}"
-    hud_text2 = font.render(text2, True, WHITE)
-    screen.blit(hud_text2, (10, 30))
+def MakeHud(font, screen, enemies, towers_to_build, health):
+    textEnemyCount = f"Enemies: {len(enemies)}"
+    hud_textEnemyCount = font.render(textEnemyCount, True, WHITE)
+    screen.blit(hud_textEnemyCount, (10, 10))
+    
+    textTowerCount = f"Towers: {towers_to_build}"
+    hud_textTowerCount = font.render(textTowerCount, True, WHITE)
+    screen.blit(hud_textTowerCount, (10, 30))
+    
+    textHealth = f"Health: {health}"
+    hud_textHealth = font.render(textHealth, True, WHITE)
+    screen.blit(hud_textHealth, (10, 50))
+
     DisplayEnemyHealthBar(screen, enemies)
 
 def DisplayEnemyHealthBar(screen, enemies):
