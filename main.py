@@ -6,7 +6,7 @@ from fake_block import FakeBlock
 from levels.level_0.level_0 import Level_0
 from constants import *
 from player import Player
-from hud import MakeHud
+from hud.hud import MakeHud
 
 # Initialize Pygame
 pygame.init()
@@ -52,3 +52,8 @@ while running:
 
 pygame.quit()
 sys.exit()
+
+
+def ChooseCurrentLevel():
+
+    return Level_0
