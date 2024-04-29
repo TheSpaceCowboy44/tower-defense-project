@@ -1,0 +1,27 @@
+{
+    "displayName": "Niveau 1 - ",
+    "enemySpawnData":
+    [
+        {
+            "enemyType": 1,
+            "spawnWaitTime": 5000
+        },
+        {
+            "enemyType": 1,
+            "spawnWaitTime": 2000
+        },
+        {
+            "enemyType": 1,
+            "spawnWaitTime": 5000
+        }
+    ],
+    "backgroundSprites":[
+        {
+            "areaType": "enemy",
+            "left": 0,
+            "top": 0,
+            "width": 45,
+            "height": 100
+        }
+    ]
+}

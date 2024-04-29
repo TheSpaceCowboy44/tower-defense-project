@@ -3,7 +3,7 @@ from pygame.locals import *
 import sys
 
 from fake_block import FakeBlock
-from levels.level_0 import Level_0
+from levels.level_0.level_0 import Level_0
 from constants import *
 from player import Player
 from hud import MakeHud
@@ -21,7 +21,7 @@ font = pygame.font.Font(None, 22)
 
 player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
 level_0 = Level_0(SCREEN_WIDTH, SCREEN_HEIGHT)
-fake_block = FakeBlock(90)
+#fake_block = FakeBlock(90)
 
 # Game loop
 running = True
@@ -35,13 +35,13 @@ while running:
 
     # Update
     level_0.update(player)
-    fake_block.update()
+    #fake_block.update()
 
     # Draw
     screen.fill(BLACK)
     level_0.draw(screen)
     player.draw(screen)
-    fake_block.draw(screen)
+    #fake_block.draw(screen)
     screen.blit(level_0.image, level_0.rect.topleft)
 
     MakeHud(font, screen, level_0.enemies, level_0.towers_to_build, level_0.health)

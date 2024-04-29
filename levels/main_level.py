@@ -17,6 +17,8 @@ class MainLevel(pygame.sprite.Sprite):
         self.enemy_spawn_timer = pygame.time.get_ticks()
         self.enemy_spawn_executed = False
         self.enemyInfos = getEnemyInfos()
+        self.gameover = {'state': 'lost', 'hasEnded': False }
+        self.timer = pygame .time.get_ticks()
 
     def update(self,player):
         player_towers_collisions = pygame.sprite.spritecollide(player, self.towers, False)
@@ -36,6 +38,7 @@ class MainLevel(pygame.sprite.Sprite):
             self.checkBulletCollision(tower.bullets, self.enemies)
         self.enemies.update()
         player.update(self)
+        self.gameover = self.checkGameOver()
 
     def draw(self, surface):
         for area_block in self.area_blocks:
@@ -77,7 +80,6 @@ class MainLevel(pygame.sprite.Sprite):
             if(enemyList[0].health <= 0):
                 enemyList[0].kill()
     def spawnEnemies(self):
-        now = pygame.time.get_ticks()
         for enemyData in self.enemyInfos:
             now = pygame.time.get_ticks()
             if now - self.enemy_spawn_timer > enemyData.spawnWaitTime:
@@ -85,6 +87,16 @@ class MainLevel(pygame.sprite.Sprite):
                 self.enemy_spawn_timer = now
         if(len(self.enemies) == len(self.enemyInfos)):
             self.enemy_spawn_executed = True
+    def checkGameOver(self):
+        if(self.health <= 0):
+            now = pygame.time.get_ticks()
+            if(now - self.timer > 15000):
+                return {'state': 'lost', 'hasEnded': True }
+        elif(len(self.enemies) == 0 and self.health > 0):
+            now = pygame.time.get_ticks()
+            if(now - self.timer > 15000):
+                return {'state': 'won', 'hasEnded': True }
+
 
 def addEnemy(self, enemyType):
     x_start_boundary = SCREEN_WIDTH/2-SMALL_CORRIDOR_GAP + SCREEN_WIDTH*0.02
@@ -95,7 +107,7 @@ def addEnemy(self, enemyType):
 
 def getEnemyInfos():
     enemySpawnDataList = []
-    with open('levels/level_0.json', 'r') as file:
+    with open('levels/level_0/level_0.json', 'r') as file:
         data = json.load(file)
 
     enemySpawnDataJson = data['enemySpawnData']
