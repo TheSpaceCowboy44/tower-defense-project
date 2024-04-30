@@ -11,9 +11,10 @@ class Button:
         self.rect = pygame.Rect(position, size)
         self.font_size = font_size
         self.id = id
+        self.background_color = GRAY
 
     def draw(self, screen):
-        pygame.draw.rect(screen, GRAY, self.rect)
+        pygame.draw.rect(screen, self.background_color, self.rect)
         font = pygame.font.Font(None, self.font_size)
         text_surface = font.render(self.text, True, WHITE)
         text_rect = text_surface.get_rect(center=self.rect.center)

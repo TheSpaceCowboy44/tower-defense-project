@@ -78,6 +78,9 @@ while running:
                         for i, level in enumerate(levels):
                             if button.id == f"start_level_{i}" and game_state == "startmenu":
                                 print(f'selecting level {i}')
+                                for start_menu_button in start_menu_buttons:
+                                    start_menu_button.background_color = GRAY
+                                button.background_color = GREEN
                                 current_level = chooseCurrentLevel(f"level_{i}")
                         if button.id == "gameover_ok" and game_state == "gameover":
                             level_started = False
