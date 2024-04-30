@@ -1,4 +1,4 @@
-e# TOWER DEFENSE GAME
+# TOWER DEFENSE GAME
 tiny tower-defense-like game made with Pygame that I do for fun.
 
 ![image](https://github.com/TheSpaceCowboy44/tower-defense-project/assets/61913181/29306153-675d-4492-8ecd-6c3a15b3f557)
