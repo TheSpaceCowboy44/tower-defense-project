@@ -96,6 +96,8 @@ class MainLevel(pygame.sprite.Sprite):
             now = pygame.time.get_ticks()
             if(now - self.timer > 15000):
                 return {'state': 'won', 'hasEnded': True }
+    def reset(self, width, height):
+        self.__init__(width, height)
 
 
 def addEnemy(self, enemyType):

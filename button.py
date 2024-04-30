@@ -4,15 +4,17 @@ from constants import *
 
 # Define Button class
 class Button:
-    def __init__(self, text, position, size):
+    def __init__(self, text, position, size, font_size, id):
         self.text = text
         self.position = position
         self.size = size
         self.rect = pygame.Rect(position, size)
+        self.font_size = font_size
+        self.id = id
 
     def draw(self, screen):
         pygame.draw.rect(screen, GRAY, self.rect)
-        font = pygame.font.Font(None, 36)
+        font = pygame.font.Font(None, self.font_size)
         text_surface = font.render(self.text, True, WHITE)
         text_rect = text_surface.get_rect(center=self.rect.center)
         screen.blit(text_surface, text_rect)

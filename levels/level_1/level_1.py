@@ -3,7 +3,7 @@ from pygame.locals import *
 from enemy import *
 from levels.main_level import MainLevel, AreaBlock
 
-class Level_0(MainLevel):
+class Level_1(MainLevel):
     def __init__(self, width, height):
         super().__init__(width, height)
         self.image = pygame.Surface((width, height), pygame.SRCALPHA)

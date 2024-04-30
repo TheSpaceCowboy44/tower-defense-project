@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+from button import Button
 from constants import *
 
 def MakeHud(font, screen, enemies, towers_to_build, health):
@@ -35,10 +36,10 @@ def DisplayGameOverScreen(screen, enemies):
     # Display text on the game over screen
     font = pygame.font.Font(None, 36)
     text = font.render("Game Over", True, WHITE)
-    text_rect = text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 50))
+    text_rect = text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - screen.get_height()*0.40))
     screen.blit(text, text_rect)
 
     # Display enemy count
     enemy_count_text = font.render(f"Enemies Remaining: {len(enemies)}", True, WHITE)
-    enemy_count_rect = enemy_count_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+    enemy_count_rect = enemy_count_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - screen.get_height()*0.30))
     screen.blit(enemy_count_text, enemy_count_rect)
