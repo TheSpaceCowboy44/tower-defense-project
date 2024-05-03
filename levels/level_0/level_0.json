@@ -4,15 +4,15 @@
     [
         {
             "enemyType": 1,
-            "spawnWaitTime": 5000
+            "spawn_y": -1
         },
         {
             "enemyType": 1,
-            "spawnWaitTime": 2000
+            "spawn_y": 1
         },
         {
             "enemyType": 1,
-            "spawnWaitTime": 5000
+            "spawn_y": 200
         }
     ],
     "backgroundSprites":[

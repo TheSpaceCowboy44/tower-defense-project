@@ -16,6 +16,7 @@ class Level_0(MainLevel):
         self.towerInfos = getTowerInfosFromJson(self.configFile)
         self.health = 100
         self.area_blocks = getAreaBlocks()
+        self.spawnEnemies()
     def update(self, player):
         super().update(player)
     def draw(self, surface):

@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-from constants import *
+from settings import *
 from utils import *
 
 class Tower_3(pygame.sprite.Sprite):

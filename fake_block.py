@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-from constants import YELLOW_2
+from settings import YELLOW_2
 from utils import *
 
 class FakeBlock(pygame.sprite.Sprite):

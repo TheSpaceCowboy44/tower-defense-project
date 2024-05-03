@@ -15,7 +15,6 @@ class MainLevel(pygame.sprite.Sprite):
         self.towers = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
         self.enemy_spawn_timer = pygame.time.get_ticks()
-        self.enemy_spawn_executed = False
         self.configFile = ''
         self.enemyInfos = []
         self.towerInfos = []
@@ -29,10 +28,8 @@ class MainLevel(pygame.sprite.Sprite):
             player.can_place_tower = True
         else:
             player.can_place_tower = False
-            
         self.towers.update(self.enemies, player)
-        if not self.enemy_spawn_executed:
-            self.spawnEnemies()
+        
         for enemy in self.enemies:
             if(enemy.rect.y > SCREEN_HEIGHT + 20):
                 self.health = self.health - enemy.damage
@@ -84,12 +81,7 @@ class MainLevel(pygame.sprite.Sprite):
                 enemyList[0].kill()
     def spawnEnemies(self):
         for enemyData in self.enemyInfos:
-            now = pygame.time.get_ticks()
-            if now - self.enemy_spawn_timer > enemyData.spawnWaitTime:
-                addEnemy(self, enemyData.enemyType)
-                self.enemy_spawn_timer = now
-        if(len(self.enemies) == len(self.enemyInfos)):
-            self.enemy_spawn_executed = True
+            addEnemy(self, enemyData)
     def checkGameOver(self):
         if(self.health <= 0):
             now = pygame.time.get_ticks()
@@ -103,12 +95,12 @@ class MainLevel(pygame.sprite.Sprite):
         self.__init__(width, height)
 
 
-def addEnemy(self, enemyType):
+def addEnemy(self, enemy):
     x_start_boundary = SCREEN_WIDTH/2-SMALL_CORRIDOR_GAP + SCREEN_WIDTH*0.02
     x_end_boundary = SCREEN_WIDTH/2+SMALL_CORRIDOR_GAP - SCREEN_WIDTH*0.04
     spawn_x = random.randint(x_start_boundary, x_end_boundary)
-    enemy_sprite = create_enemy_sprite(enemyType, spawn_x, -200)
-    self.enemies.add(enemy_sprite)
+    enemy = makeEnemy(enemy.enemyType, spawn_x, enemy.spawn_y)
+    self.enemies.add(enemy)
 
 def getEnemyInfosFromJson(json_file):
     enemySpawnDataList = []
@@ -119,8 +111,8 @@ def getEnemyInfosFromJson(json_file):
 
     for enemy in enemySpawnDataJson:
         enemy_type = int(enemy['enemyType'])
-        spawn_wait_time = int(enemy['spawnWaitTime'])
-        enemySpawnData = EnemySpawnData(enemy_type, spawn_wait_time)
+        spawn_y = int(enemy['spawn_y'])
+        enemySpawnData = EnemySpawnData(enemy_type, spawn_y)
         enemySpawnDataList.append(enemySpawnData)
     return enemySpawnDataList
 
@@ -139,7 +131,7 @@ def getTowerInfosFromJson(json_file):
     towerDataList = [tower_1, tower_2, tower_3]
     return towerDataList
 
-def create_enemy_sprite(enemy_type, spawn_x, spawn_y):
+def makeEnemy(enemy_type, spawn_x, spawn_y):
     if enemy_type == 1:
         return Enemy_Type_1(spawn_x, spawn_y)
     elif enemy_type == 2:
@@ -159,9 +151,9 @@ class AreaBlock(pygame.sprite.Sprite):
         pygame.draw.rect(surface, self.color, self.rect)
     
 class EnemySpawnData:
-    def __init__(self,enemyType, spawnWaitTime):
+    def __init__(self,enemyType, spawn_y):
         self.enemyType = enemyType
-        self.spawnWaitTime = spawnWaitTime
+        self.spawn_y = spawn_y
 
 class TowerAvailabilityData:
     def __init__(self,towerType, numberOfTower):

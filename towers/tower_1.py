@@ -2,7 +2,7 @@ import random
 import pygame
 from pygame.locals import *
 
-from constants import *
+from settings import *
 from utils import *
 
 class Tower_1(pygame.sprite.Sprite):
@@ -28,7 +28,7 @@ class Tower_1(pygame.sprite.Sprite):
                 bullet_angle = calculer_angle(self.rect.x, self.rect.y, enemy_detected.rect.x, enemy_detected.rect.y)
                 bullet = TowerBullet(self, bullet_angle)
                 self.bullets.add(bullet)
-                self.spawn_bullet_timer = now + 1000
+                self.spawn_bullet_timer = now + TOWER_1_BULLET_TIMER
         else:
             self.highlight_detection_circle = False
 

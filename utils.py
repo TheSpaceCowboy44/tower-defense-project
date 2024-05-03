@@ -3,7 +3,7 @@ import math
 import pygame
 from pygame.locals import *
 
-from constants import *
+from settings import *
 
 class Direction(Enum):
     UP = 1

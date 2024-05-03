@@ -6,7 +6,7 @@ import sys
 from button import Button
 from fake_block import FakeBlock
 from levels.level_0.level_0 import Level_0
-from constants import *
+from settings import *
 from levels.level_1.level_1 import Level_1
 from player import Player
 from hud.hud import DisplayGameOverScreen, MakeHud

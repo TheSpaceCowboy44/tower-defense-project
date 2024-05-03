@@ -4,7 +4,7 @@
     [
         {
             "enemyType": 1,
-            "spawnWaitTime": 5000
+            "spawnWaitTime": 10000
         },
         {
             "enemyType": 1,
@@ -39,10 +39,10 @@
     "towersData":
     [
         {
-            "tower_1": 3
+            "tower_1": 2
         },
         {
-            "tower_2": 1
+            "tower_2": 3
         },
         {
             "tower_3": 0

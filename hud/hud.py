@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-from constants import *
+from settings import *
 
 def MakeHud(font, screen, enemies, towersInfos, health):
     textEnemyCount = f"Enemies: {len(enemies)}"

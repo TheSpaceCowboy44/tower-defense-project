@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-from constants import *
+from settings import *
 from towers.tower_2 import Tower_2
 from towers.tower_1 import Tower_1
 
@@ -32,7 +32,6 @@ class Player(pygame.sprite.Sprite):
             self.checkWallCollision()
         if not any(pressed_keys):
             hasMoved = False
-        
         if pressed_keys[K_1] or pressed_keys[K_2] or pressed_keys[K_3]:
             for tower_data in current_level.towerInfos:
                 if tower_data.towerType == 1 and tower_data.numberOf > 0 and pressed_keys[K_1] and self.can_place_tower:
