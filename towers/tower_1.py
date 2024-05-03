@@ -5,11 +5,11 @@ from pygame.locals import *
 from constants import *
 from utils import *
 
-class Tower(pygame.sprite.Sprite):
+class Tower_1(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.image = pygame.Surface((TOWER_SIZE, TOWER_SIZE))
-        self.image.fill(BLUE)
+        self.image = pygame.Surface((TOWER_1_SIZE, TOWER_1_SIZE))
+        self.image.fill(LIGHTBLUE)
         self.rect = self.image.get_rect(center=(x, y))
         self.highlight_detection_circle = False
         self.bullet_images = [pygame.Surface((2, 8))]
@@ -51,7 +51,7 @@ class TowerBullet(pygame.sprite.Sprite):
         super().__init__()
         self.original_image = tower.bullet_images[0]
         self.image = pygame.transform.rotate(self.original_image, -angle)
-        self.image.fill(YELLOW_2)
+        self.image.fill(TOWER_1_BULLET_COLOR)
         self.rect = self.image.get_rect(center=(tower.rect.centerx, tower.rect.centery))
         self.position = pygame.math.Vector2(tower.rect.centerx, tower.rect.centery)
         self.velocity = pygame.math.Vector2(0, 0)

@@ -23,5 +23,17 @@
             "width": 45,
             "height": 100
         }
+    ],
+    "towersData":
+    [
+        {
+            "tower_1": 3
+        },
+        {
+            "tower_2": 0
+        },
+        {
+            "tower_3": 0
+        }
     ]
 }

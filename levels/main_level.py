@@ -16,17 +16,20 @@ class MainLevel(pygame.sprite.Sprite):
         self.enemies = pygame.sprite.Group()
         self.enemy_spawn_timer = pygame.time.get_ticks()
         self.enemy_spawn_executed = False
-        self.enemyInfos = getEnemyInfos()
+        self.configFile = ''
+        self.enemyInfos = []
+        self.towerInfos = []
         self.gameover = {'state': 'lost', 'hasEnded': False }
         self.timer = pygame .time.get_ticks()
 
     def update(self,player):
         player_towers_collisions = pygame.sprite.spritecollide(player, self.towers, False)
-        if(self.towers_to_build > 0):
-            if(len(player_towers_collisions) == 0) and self.isInTowerArea(player) and not self.isInEnemyArea(player):
-                player.can_place_tower = True
-            else:
-                player.can_place_tower = False
+        
+        if(len(player_towers_collisions) == 0) and self.isInTowerArea(player) and not self.isInEnemyArea(player):
+            player.can_place_tower = True
+        else:
+            player.can_place_tower = False
+            
         self.towers.update(self.enemies, player)
         if not self.enemy_spawn_executed:
             self.spawnEnemies()
@@ -107,19 +110,34 @@ def addEnemy(self, enemyType):
     enemy_sprite = create_enemy_sprite(enemyType, spawn_x, -200)
     self.enemies.add(enemy_sprite)
 
-def getEnemyInfos():
+def getEnemyInfosFromJson(json_file):
     enemySpawnDataList = []
-    with open('levels/level_0/level_0.json', 'r') as file:
+    with open(json_file, 'r') as file:
         data = json.load(file)
 
     enemySpawnDataJson = data['enemySpawnData']
 
     for enemy in enemySpawnDataJson:
-        enemy_type = enemy['enemyType']
-        spawn_wait_time = enemy['spawnWaitTime']
-        enemySpawnData = EnemySpawnData(int(enemy_type), int(spawn_wait_time))
+        enemy_type = int(enemy['enemyType'])
+        spawn_wait_time = int(enemy['spawnWaitTime'])
+        enemySpawnData = EnemySpawnData(enemy_type, spawn_wait_time)
         enemySpawnDataList.append(enemySpawnData)
     return enemySpawnDataList
+
+def getTowerInfosFromJson(json_file):
+    with open(json_file, 'r') as file:
+        data = json.load(file)
+
+    towersData = data['towersData']
+    for towerData in towersData:
+        if towerData.get('tower_1') is not None:
+            tower_1 = TowerAvailabilityData(1, int(towerData['tower_1']))
+        if towerData.get('tower_2') is not None:
+            tower_2 = TowerAvailabilityData(2, int(towerData['tower_2']))
+        if towerData.get('tower_3') is not None:
+            tower_3 = TowerAvailabilityData(3, int(towerData['tower_3']))
+    towerDataList = [tower_1, tower_2, tower_3]
+    return towerDataList
 
 def create_enemy_sprite(enemy_type, spawn_x, spawn_y):
     if enemy_type == 1:
@@ -144,4 +162,8 @@ class EnemySpawnData:
     def __init__(self,enemyType, spawnWaitTime):
         self.enemyType = enemyType
         self.spawnWaitTime = spawnWaitTime
-        
+
+class TowerAvailabilityData:
+    def __init__(self,towerType, numberOfTower):
+        self.towerType = towerType
+        self.numberOf = numberOfTower

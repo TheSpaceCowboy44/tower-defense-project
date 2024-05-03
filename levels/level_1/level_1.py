@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 from enemy import *
-from levels.main_level import MainLevel, AreaBlock
+from levels.main_level import MainLevel, AreaBlock, getEnemyInfosFromJson, getTowerInfosFromJson
 
 class Level_1(MainLevel):
     def __init__(self, width, height):
@@ -11,7 +11,9 @@ class Level_1(MainLevel):
         self.rect = self.image.get_rect()
         self.rect.x = (pygame.display.Info().current_w - width) // 2
         self.rect.y = (pygame.display.Info().current_h - height) // 2
-        self.towers_to_build = 3
+        self.configFile = 'levels/level_1/level_1.json'
+        self.enemyInfos = getEnemyInfosFromJson(self.configFile)
+        self.towerInfos = getTowerInfosFromJson(self.configFile)
         self.health = 100
         self.area_blocks = getAreaBlocks()
     def update(self, player):

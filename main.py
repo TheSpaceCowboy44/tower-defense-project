@@ -36,7 +36,7 @@ for level in levels_directory:
 current_level_name = levels[0]
 current_level = chooseCurrentLevel(current_level_name)
 
-font = pygame.font.Font(None, 22)
+font = pygame.font.Font(None, 20)
 
 player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
 
@@ -103,7 +103,7 @@ while running:
         current_level.draw(screen)
         player.draw(screen)
         screen.blit(current_level.image, current_level.rect.topleft)
-        MakeHud(font, screen, current_level.enemies, current_level.towers_to_build, current_level.health)
+        MakeHud(font, screen, current_level.enemies, current_level.towerInfos, current_level.health)
         if current_level.gameover is not None and current_level.gameover.get('hasEnded', False) == True :
             DisplayGameOverScreen(screen, current_level.enemies)
             game_state = "gameover"
