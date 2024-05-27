@@ -40,8 +40,8 @@ font = pygame.font.Font(None, 20)
 
 player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
 
-button1 = Button("Start", (SCREEN_WIDTH/4, SCREEN_HEIGHT/4), (SCREEN_WIDTH/2, SCREEN_HEIGHT/8), 36, "start_start")
-button2 = Button("Quit", (SCREEN_WIDTH/4, SCREEN_HEIGHT/2), (SCREEN_WIDTH/2, SCREEN_HEIGHT/8), 36, "start_quit")
+button1 = Button("Start", (SCREEN_WIDTH/4, SCREEN_HEIGHT*(1/5)), (SCREEN_WIDTH/2, SCREEN_HEIGHT/10), 36, "start_start")
+button2 = Button("Quit", (SCREEN_WIDTH/4, SCREEN_HEIGHT*(2/5)), (SCREEN_WIDTH/2, SCREEN_HEIGHT/10), 36, "start_quit")
 start_menu_buttons = [button1, button2]
 
 for i, level in enumerate(levels):

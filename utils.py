@@ -51,3 +51,8 @@ def blitRotate(surf, image, pos, originPos, angle):
     rotated_image = pygame.transform.rotate(image, angle)
     rotated_image_rect = rotated_image.get_rect(center=rotated_image_center)
     surf.blit(rotated_image, rotated_image_rect.topleft)
+
+def h12(multiplier):
+    return SCREEN_HEIGHT * (multiplier/12)
+def w12(multiplier):
+    return SCREEN_HEIGHT * (multiplier/12)
