@@ -4,27 +4,27 @@
     [
         {
             "enemyType": 1,
-            "spawnWaitTime": 10000
+            "spawn_y": -1000
         },
         {
             "enemyType": 1,
-            "spawnWaitTime": 2000
+            "spawn_y": -500
         },
         {
             "enemyType": 1,
-            "spawnWaitTime": 5000
+            "spawn_y": -495
         },
         {
             "enemyType": 1,
-            "spawnWaitTime": 1000
+            "spawn_y": -200
         },
         {
             "enemyType": 1,
-            "spawnWaitTime": 500
+            "spawn_y": -100
         },
         {
             "enemyType": 1,
-            "spawnWaitTime": 3000
+            "spawn_y": -220
         }
     ],
     "backgroundSprites":[

@@ -4,15 +4,15 @@
     [
         {
             "enemyType": 1,
-            "spawn_y": -1
+            "spawn_y": -150
         },
         {
             "enemyType": 1,
-            "spawn_y": 1
+            "spawn_y": -500
         },
         {
             "enemyType": 1,
-            "spawn_y": 200
+            "spawn_y": -400
         }
     ],
     "backgroundSprites":[

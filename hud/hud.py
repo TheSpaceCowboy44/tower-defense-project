@@ -43,10 +43,10 @@ def DisplayGameOverScreen(screen, enemies):
     # Display text on the game over screen
     font = pygame.font.Font(None, 36)
     text = font.render("Game Over", True, WHITE)
-    text_rect = text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - screen.get_height()*0.40))
+    text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
     screen.blit(text, text_rect)
 
     # Display enemy count
     enemy_count_text = font.render(f"Enemies Remaining: {len(enemies)}", True, WHITE)
-    enemy_count_rect = enemy_count_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - screen.get_height()*0.30))
+    enemy_count_rect = enemy_count_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - SCREEN_HEIGHT/4 ))
     screen.blit(enemy_count_text, enemy_count_rect)
