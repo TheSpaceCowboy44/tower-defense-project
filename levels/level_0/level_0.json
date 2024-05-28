@@ -15,19 +15,10 @@
             "spawn_y": -400
         }
     ],
-    "backgroundSprites":[
-        {
-            "areaType": "enemy",
-            "left": 0,
-            "top": 0,
-            "width": 45,
-            "height": 100
-        }
-    ],
     "towersData":
     [
         {
-            "tower_1": 3
+            "tower_1": 4
         },
         {
             "tower_2": 0
@@ -35,5 +26,6 @@
         {
             "tower_3": 0
         }
-    ]
+    ],
+    "health": 100
 }

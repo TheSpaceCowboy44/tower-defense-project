@@ -1,9 +1,10 @@
 import pygame
 from pygame.locals import *
 from settings import *
+from utils import w12,h12
 
-def MakeHud(font, screen, enemies, towersInfos, health):
-    textEnemyCount = f"Enemies: {len(enemies)}"
+def MakeHud(font, screen, level, towersInfos, health):
+    textEnemyCount = f"Enemies: {len(level.enemies)}"
     hud_textEnemyCount = font.render(textEnemyCount, True, WHITE)
     screen.blit(hud_textEnemyCount, (10, 10))
     
@@ -23,7 +24,7 @@ def MakeHud(font, screen, enemies, towersInfos, health):
     hud_textHealth = font.render(textHealth, True, WHITE)
     screen.blit(hud_textHealth, (10, 70))
 
-    DisplayEnemyHealthBar(screen, enemies)
+    DisplayEnemyHealthBar(screen, level.enemies)
 
 def DisplayEnemyHealthBar(screen, enemies):
     for enemy in enemies:
@@ -34,7 +35,7 @@ def DisplayEnemyHealthBar(screen, enemies):
         rect.y =+ enemy.rect.y - 8
         pygame.draw.rect(screen, GREEN, rect)
 
-def DisplayGameOverScreen(screen, enemies):
+def DisplayGameOverScreen(screen, level):
     # Create a semi-transparent black surface to overlay the screen
     overlay = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
     overlay.fill((0, 0, 0, 150))  # Set the alpha value to 150 for transparency
@@ -42,11 +43,23 @@ def DisplayGameOverScreen(screen, enemies):
 
     # Display text on the game over screen
     font = pygame.font.Font(None, 36)
-    text = font.render("Game Over", True, WHITE)
-    text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
-    screen.blit(text, text_rect)
+    big_font = pygame.font.Font(None, 64)
 
-    # Display enemy count
-    enemy_count_text = font.render(f"Enemies Remaining: {len(enemies)}", True, WHITE)
-    enemy_count_rect = enemy_count_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - SCREEN_HEIGHT/4 ))
-    screen.blit(enemy_count_text, enemy_count_rect)
+    gameover_text = big_font.render("Game Over", True, WHITE)
+    gameover_rect = gameover_text.get_rect(center=(w12(6), h12(2)))
+    screen.blit(gameover_text, gameover_rect)
+
+    # Display enemy remaining count
+    remaining_enemy_count_text = font.render(f"Enemies Remaining: {len(level.enemies)}", True, WHITE)
+    remaining_enemy_count_rect = remaining_enemy_count_text.get_rect(center=(w12(6), h12(3)))
+    screen.blit(remaining_enemy_count_text, remaining_enemy_count_rect)
+
+    # Display enemy killed count
+    enemy_killed_count_text = font.render(f"Enemies Killed: {level.enemies_killed}", True, WHITE)
+    enemy_killed_count_rect = enemy_killed_count_text.get_rect(center=(w12(6), h12(4)))
+    screen.blit(enemy_killed_count_text, enemy_killed_count_rect)
+
+    # Display health
+    health_text = font.render(f"Health: ({level.health}/{level.original_health})", True, WHITE)
+    health_rect = health_text.get_rect(center=(w12(6), h12(5)))
+    screen.blit(health_text, health_rect)

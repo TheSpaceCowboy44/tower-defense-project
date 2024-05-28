@@ -1,7 +1,8 @@
 import pygame
 from pygame.locals import *
 from enemy import *
-from levels.main_level import MainLevel, AreaBlock, getEnemyInfosFromJson, getTowerInfosFromJson
+from levels.main_level import AreaBlockType, MainLevel, AreaBlock, getBlockColor, getEnemyInfosFromJson, getHealthFromJson, getTowerInfosFromJson
+from utils import h12, w12
 
 class Level_0(MainLevel):
     def __init__(self, width, height):
@@ -14,7 +15,8 @@ class Level_0(MainLevel):
         self.configFile = 'levels/level_0/level_0.json'
         self.enemyInfos = getEnemyInfosFromJson(self.configFile)
         self.towerInfos = getTowerInfosFromJson(self.configFile)
-        self.health = 100
+        self.health = getHealthFromJson(self.configFile)
+        self.original_health = self.health
         self.area_blocks = getAreaBlocks()
         self.spawnEnemies()
     def update(self, player):
@@ -23,18 +25,24 @@ class Level_0(MainLevel):
         super().draw(surface)
 
 
+
 def getAreaBlocks():
     area_blocks = pygame.sprite.Group()
-    center_rect = pygame.Rect(SCREEN_WIDTH/2 - SMALL_CORRIDOR_GAP, 0, SCREEN_WIDTH - (SCREEN_WIDTH/2 - SMALL_CORRIDOR_GAP) * 2, SCREEN_HEIGHT)
-    left_rect = pygame.Rect(0, 0, SCREEN_WIDTH/2 - SMALL_CORRIDOR_GAP, SCREEN_HEIGHT)
-    right_rect = pygame.Rect(SCREEN_WIDTH/2 + SMALL_CORRIDOR_GAP, 0, SCREEN_WIDTH/2 - SMALL_CORRIDOR_GAP, SCREEN_HEIGHT)
-    
-    center_block = AreaBlock(center_rect, "enemy_area", NOTVERYBLACK1)
-    left_block = AreaBlock(left_rect, "tower_area", NOTVERYBLACK2)
-    right_block = AreaBlock(right_rect, "tower_area", NOTVERYBLACK2)
-    # center_block = AreaBlock(center_rect, "enemy_area", GREEN_GRASS_DARK)
-    # left_block = AreaBlock(left_rect, "tower_area", GREEN_GRASS_LIGHT)
-    # right_block = AreaBlock(right_rect, "tower_area", GREEN_GRASS_LIGHT)
-    
-    area_blocks.add(left_block,right_block, center_block)
+    tilemap = getTileMap()
+    for y, row in enumerate(tilemap):
+        for x, tile in enumerate(row):
+            rect = pygame.Rect(x*w12(2), y*h12(2), w12(2)+1, h12(2)+1)
+            block = AreaBlock(rect, AreaBlockType(tile), getBlockColor(tile))
+            area_blocks.add(block)
     return area_blocks
+
+def getTileMap():
+    tilemap = [
+    [0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 1, 0, 0],
+    ]
+    return tilemap

@@ -10,6 +10,7 @@ from settings import *
 from levels.level_1.level_1 import Level_1
 from player import Player
 from hud.hud import DisplayGameOverScreen, MakeHud
+from utils import w12,h12
 
 
 def chooseCurrentLevel(level_name):
@@ -38,18 +39,18 @@ current_level = chooseCurrentLevel(current_level_name)
 
 font = pygame.font.Font(None, 20)
 
-player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+player = Player(w12(6), h12(6))
 
-button1 = Button("Start", (SCREEN_WIDTH/4, SCREEN_HEIGHT*(1/5)), (SCREEN_WIDTH/2, SCREEN_HEIGHT/10), 36, "start_start")
-button2 = Button("Quit", (SCREEN_WIDTH/4, SCREEN_HEIGHT*(2/5)), (SCREEN_WIDTH/2, SCREEN_HEIGHT/10), 36, "start_quit")
+button1 = Button("START", (w12(3), h12(4)), (w12(6), h12(1)), 36, "start_start")
+button2 = Button("EXIT GAME", (w12(3), h12(7)), (w12(6), h12(1)), 36, "start_quit")
 start_menu_buttons = [button1, button2]
 
 for i, level in enumerate(levels):
     button_select_level = Button(f"{i}", (i*(SCREEN_WIDTH/10) + (SCREEN_WIDTH/20), SCREEN_HEIGHT - 100), (SCREEN_WIDTH/20, SCREEN_HEIGHT/20), 28, f"start_level_{i}")
     start_menu_buttons.append(button_select_level)
 
-button_Ok = Button("Ok", (SCREEN_WIDTH // 2 - 50 -120, SCREEN_HEIGHT/2 + SCREEN_HEIGHT/8), (120, 40), 36, "gameover_ok")
-button_Retry = Button("Retry", (SCREEN_WIDTH // 2 + 50, SCREEN_HEIGHT/2 + SCREEN_HEIGHT/8), (120, 40), 36, "gameover_retry")
+button_Ok = Button("MENU", (SCREEN_WIDTH // 2 - 50 -120, SCREEN_HEIGHT/2 + SCREEN_HEIGHT/8), (120, 40), 36, "gameover_menu")
+button_Retry = Button("RETRY", (SCREEN_WIDTH // 2 + 50, SCREEN_HEIGHT/2 + SCREEN_HEIGHT/8), (120, 40), 36, "gameover_retry")
 gameover_buttons = [button_Ok, button_Retry]
 
 all_buttons = start_menu_buttons + gameover_buttons
@@ -81,7 +82,7 @@ while running:
                                     start_menu_button.background_color = GRAY
                                 button.background_color = GREEN
                                 current_level = chooseCurrentLevel(f"level_{i}")
-                        if button.id == "gameover_ok" and game_state == "gameover":
+                        if button.id == "gameover_menu" and game_state == "gameover":
                             level_started = False
                             game_state = "startmenu"
                         elif button.id == "gameover_retry" and game_state == "gameover":
@@ -102,9 +103,9 @@ while running:
         current_level.draw(screen)
         player.draw(screen)
         screen.blit(current_level.image, current_level.rect.topleft)
-        MakeHud(font, screen, current_level.enemies, current_level.towerInfos, current_level.health)
+        MakeHud(font, screen, current_level, current_level.towerInfos, current_level.health)
         if current_level.gameover is not None and current_level.gameover.get('hasEnded', False) == True :
-            DisplayGameOverScreen(screen, current_level.enemies)
+            DisplayGameOverScreen(screen, current_level)
             game_state = "gameover"
 
     if(game_state == "startmenu"):

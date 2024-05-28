@@ -53,6 +53,6 @@ def blitRotate(surf, image, pos, originPos, angle):
     surf.blit(rotated_image, rotated_image_rect.topleft)
 
 def h12(multiplier):
-    return SCREEN_HEIGHT * (multiplier/12)
+    return int(SCREEN_HEIGHT * (multiplier/12))
 def w12(multiplier):
-    return SCREEN_HEIGHT * (multiplier/12)
+    return int(SCREEN_WIDTH * (multiplier/12))

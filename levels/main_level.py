@@ -1,8 +1,11 @@
+from enum import Enum
 import random
 import pygame
 from pygame.locals import *
 from enemy import *
 import json
+
+from utils import w12
 
 class MainLevel(pygame.sprite.Sprite):
     def __init__(self, width, height):
@@ -14,6 +17,7 @@ class MainLevel(pygame.sprite.Sprite):
         self.rect.y = (pygame.display.Info().current_h - height) // 2
         self.towers = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
+        self.enemies_killed = 0
         self.enemy_spawn_timer = pygame.time.get_ticks()
         self.configFile = ''
         self.enemyInfos = []
@@ -51,14 +55,14 @@ class MainLevel(pygame.sprite.Sprite):
     def getEnemyAreaBlocks(self):
         enemy_area_blocks = pygame.sprite.Group()
         for area_block in self.area_blocks:
-            if(area_block.type == "enemy_area"):
+            if(area_block.type == AreaBlockType.ENEMY):
                 enemy_area_blocks.add(area_block)
         return enemy_area_blocks
     
     def getTowerAreaBlocks(self):
         tower_area_blocks = pygame.sprite.Group()
         for area_block in self.area_blocks:
-            if(area_block.type == "tower_area"):
+            if(area_block.type == AreaBlockType.TOWER):
                 tower_area_blocks.add(area_block)
         return tower_area_blocks
 
@@ -79,6 +83,8 @@ class MainLevel(pygame.sprite.Sprite):
             bullet.kill()
             if(enemyList[0].health <= 0):
                 enemyList[0].kill()
+                self.enemies_killed += 1
+
     def spawnEnemies(self):
         for enemyData in self.enemyInfos:
             addEnemy(self, enemyData)
@@ -96,19 +102,22 @@ class MainLevel(pygame.sprite.Sprite):
 
 
 def addEnemy(self, enemy):
-    x_start_boundary = SCREEN_WIDTH/2-SMALL_CORRIDOR_GAP + SCREEN_WIDTH*0.02
-    x_end_boundary = SCREEN_WIDTH/2+SMALL_CORRIDOR_GAP - SCREEN_WIDTH*0.04
+    block_x_pos = w12(6)
+    for area_block in self.area_blocks:
+        if(area_block.type == AreaBlockType.ENEMY):
+            block_x_pos = area_block.rect.x
+            break
+    x_start_boundary = block_x_pos
+    x_end_boundary = block_x_pos + w12(2)
     spawn_x = random.randint(x_start_boundary, x_end_boundary)
     enemy = makeEnemy(enemy.enemyType, spawn_x, enemy.spawn_y)
+    if(spawn_x > spawn_x + enemy.rect.width):
+        enemy.rect.x = spawn_x
     self.enemies.add(enemy)
 
 def getEnemyInfosFromJson(json_file):
     enemySpawnDataList = []
-    with open(json_file, 'r') as file:
-        data = json.load(file)
-
-    enemySpawnDataJson = data['enemySpawnData']
-
+    enemySpawnDataJson = getItemFromJsonConfig(json_file,'enemySpawnData')
     for enemy in enemySpawnDataJson:
         enemy_type = int(enemy['enemyType'])
         spawn_y = int(enemy['spawn_y'])
@@ -117,10 +126,7 @@ def getEnemyInfosFromJson(json_file):
     return enemySpawnDataList
 
 def getTowerInfosFromJson(json_file):
-    with open(json_file, 'r') as file:
-        data = json.load(file)
-
-    towersData = data['towersData']
+    towersData = getItemFromJsonConfig(json_file, 'towersData')
     for towerData in towersData:
         if towerData.get('tower_1') is not None:
             tower_1 = TowerAvailabilityData(1, int(towerData['tower_1']))
@@ -130,6 +136,15 @@ def getTowerInfosFromJson(json_file):
             tower_3 = TowerAvailabilityData(3, int(towerData['tower_3']))
     towerDataList = [tower_1, tower_2, tower_3]
     return towerDataList
+
+def getHealthFromJson(json_file):
+    healthDataJson = getItemFromJsonConfig(json_file, 'health')
+    return int(healthDataJson)
+
+def getItemFromJsonConfig(json_file, data_string):
+    with open(json_file, 'r') as file:
+        data = json.load(file)
+    return data[data_string]
 
 def makeEnemy(enemy_type, spawn_x, spawn_y):
     if enemy_type == 1:
@@ -149,6 +164,17 @@ class AreaBlock(pygame.sprite.Sprite):
         self.color = color
     def draw(self, surface):
         pygame.draw.rect(surface, self.color, self.rect)
+
+class AreaBlockType(Enum):
+    TOWER = 0
+    ENEMY = 1
+
+def getBlockColor(areaBlockType):
+    #replace by GREEN_GRASS_DARK and GREEN_GRASS_LIGHT
+    if(AreaBlockType(areaBlockType) == AreaBlockType.ENEMY):
+        return NOTVERYBLACK1
+    if(AreaBlockType(areaBlockType) == AreaBlockType.TOWER):
+        return NOTVERYBLACK2
     
 class EnemySpawnData:
     def __init__(self,enemyType, spawn_y):
