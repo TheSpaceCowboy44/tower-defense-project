@@ -100,19 +100,13 @@ class MainLevel(pygame.sprite.Sprite):
     def reset(self, width, height):
         self.__init__(width, height)
 
-
 def addEnemy(self, enemy):
-    block_x_pos = w12(6)
-    for area_block in self.area_blocks:
-        if(area_block.type == AreaBlockType.ENEMY):
-            block_x_pos = area_block.rect.x
-            break
-    x_start_boundary = block_x_pos
-    x_end_boundary = block_x_pos + w12(2)
-    spawn_x = random.randint(x_start_boundary, x_end_boundary)
+    block_x_pos = self.route_steps[0].position.x
+    spawn_x = random.randint(block_x_pos, block_x_pos + w12(2))
     enemy = makeEnemy(enemy.enemyType, spawn_x, enemy.spawn_y)
     if(spawn_x > spawn_x + enemy.rect.width):
         enemy.rect.x = spawn_x
+    
     self.enemies.add(enemy)
 
 def getEnemyInfosFromJson(json_file):

@@ -5,12 +5,6 @@ from pygame.locals import *
 
 from settings import *
 
-class Direction(Enum):
-    UP = 1
-    RIGHT = 2
-    DOWN = 3
-    LEFT = 4
-
 def check_collision_group_circle(sprite, group, radius):
     sprite_rect = sprite.rect
     for other_sprite in group:
@@ -56,3 +50,14 @@ def h12(multiplier):
     return int(SCREEN_HEIGHT * (multiplier/12))
 def w12(multiplier):
     return int(SCREEN_WIDTH * (multiplier/12))
+
+class Direction(Enum):
+    UP = 1
+    DOWN = 2
+    RIGHT = 3
+    LEFT = 4
+
+class Position():
+    def __init__(self, x, y):
+        self.x = x,
+        self.y = y

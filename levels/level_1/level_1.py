@@ -18,12 +18,12 @@ class Level_1(MainLevel):
         self.health = getHealthFromJson(self.configFile)
         self.original_health = self.health
         self.area_blocks = getAreaBlocks()
+        self.route_steps = getRouteSteps()
         self.spawnEnemies()
     def update(self, player):
         super().update(player)
     def draw(self, surface):
         super().draw(surface)
-
 
 def getAreaBlocks():
     area_blocks = pygame.sprite.Group()
@@ -35,13 +35,52 @@ def getAreaBlocks():
             area_blocks.add(block)
     return area_blocks
 
+def getRouteSteps():
+    routeSteps = []
+    routeStepsMap = getEnemyRouteMap()
+    step = 1
+    for y, row in enumerate(routeStepsMap):
+        for x, tile in enumerate(row):
+            if(int(tile) == step):
+                if(step == 1):
+                    isActive = True
+                else:
+                    isActive = False
+                routeStep = EnemyRouteStep(Position((x*w12(2), (y*h12(2)))), None, isActive)
+                routeSteps.append(routeStep)
+                step +=1
+    for i, step in enumerate(routeSteps):
+        if(step[i+1] is not None):
+            if(step.position.x < routeSteps[i+1].position.x):
+                step.direction = Direction.RIGHT
+            if(step.position.x > routeSteps[i+1].position.x):
+                step.direction = Direction.LEFT
+            if(step.position.y < routeSteps[i+1].position.y):
+                step.direction = Direction.UP
+            if(step.position.y > routeSteps[i+1].position.y):
+                step.direction = Direction.DOWN
+        else:
+            step.direction = routeSteps[i-1].direction
+    return routeSteps
+
 def getTileMap():
     tilemap = [
-    [0, 0, 1, 0, 0, 0],
-    [0, 1, 1, 0, 0, 0],
-    [0, 1, 0, 0, 0, 0],
-    [0, 1, 1, 0, 0, 0],
-    [0, 0, 1, 0, 0, 0],
-    [0, 0, 1, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0],
+        [0, 1, 1, 0, 0, 0],
+        [0, 1, 0, 0, 0, 0],
+        [0, 1, 1, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0],
     ]
     return tilemap
+
+def getEnemyRouteMap():
+    route = [
+        [0, 0, 1, 0, 0, 0],
+        [0, 3, 2, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 4, 5, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 6, 0, 0, 0],
+    ]
+    return route

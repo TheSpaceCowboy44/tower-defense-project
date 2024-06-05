@@ -25,7 +25,6 @@ class Level_0(MainLevel):
         super().draw(surface)
 
 
-
 def getAreaBlocks():
     area_blocks = pygame.sprite.Group()
     tilemap = getTileMap()
@@ -46,3 +45,14 @@ def getTileMap():
     [0, 0, 0, 1, 0, 0],
     ]
     return tilemap
+
+def getEnemyRouteMap():
+    route = [
+    [0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    ]
+    return route

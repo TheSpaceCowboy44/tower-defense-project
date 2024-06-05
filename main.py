@@ -88,8 +88,7 @@ while running:
                         elif button.id == "gameover_retry" and game_state == "gameover":
                             level_started = True
                             game_state = "in_game"
-                        
-
+    
     now = pygame.time.get_ticks()
 
     if(game_state == "in_game"):
