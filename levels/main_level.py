@@ -5,7 +5,7 @@ from pygame.locals import *
 from enemy import *
 import json
 
-from utils import w12
+from utils import h12, w12
 
 class MainLevel(pygame.sprite.Sprite):
     def __init__(self, width, height):
@@ -24,6 +24,7 @@ class MainLevel(pygame.sprite.Sprite):
         self.towerInfos = []
         self.gameover = {'state': 'lost', 'hasEnded': False }
         self.timer = pygame .time.get_ticks()
+        self.route_steps = self.getRouteSteps()
 
     def update(self,player):
         player_towers_collisions = pygame.sprite.spritecollide(player, self.towers, False)
@@ -99,6 +100,34 @@ class MainLevel(pygame.sprite.Sprite):
                 return {'state': 'won', 'hasEnded': True }
     def reset(self, width, height):
         self.__init__(width, height)
+    
+    def getRouteSteps(self):
+        routeSteps = []
+        routeStepsMap = self.getEnemyRouteMap()
+        step = 1
+        for y, row in enumerate(routeStepsMap):
+            for x, tile in enumerate(row):
+                if(int(tile) == step):
+                    if(step == 1):
+                        isActive = True
+                    else:
+                        isActive = False
+                    routeStep = EnemyRouteStep(Position((x*w12(2), (y*h12(2)))), None, isActive)
+                    routeSteps.append(routeStep)
+                    step +=1
+        for i, step in enumerate(routeSteps):
+            if(step[i+1] is not None):
+                if(step.position.x < routeSteps[i+1].position.x):
+                    step.direction = Direction.RIGHT
+                if(step.position.x > routeSteps[i+1].position.x):
+                    step.direction = Direction.LEFT
+                if(step.position.y < routeSteps[i+1].position.y):
+                    step.direction = Direction.UP
+                if(step.position.y > routeSteps[i+1].position.y):
+                    step.direction = Direction.DOWN
+            else:
+                step.direction = routeSteps[i-1].direction
+        return routeSteps
 
 def addEnemy(self, enemy):
     block_x_pos = self.route_steps[0].position.x
@@ -179,3 +208,4 @@ class TowerAvailabilityData:
     def __init__(self,towerType, numberOfTower):
         self.towerType = towerType
         self.numberOf = numberOfTower
+

@@ -23,6 +23,16 @@ class Level_0(MainLevel):
         super().update(player)
     def draw(self, surface):
         super().draw(surface)
+    def getEnemyRouteMap():
+        route = [
+        [0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        ]
+        return route
 
 
 def getAreaBlocks():
@@ -45,14 +55,3 @@ def getTileMap():
     [0, 0, 0, 1, 0, 0],
     ]
     return tilemap
-
-def getEnemyRouteMap():
-    route = [
-    [0, 0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0],
-    ]
-    return route
