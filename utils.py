@@ -57,7 +57,12 @@ class Direction(Enum):
     RIGHT = 3
     LEFT = 4
 
+class TypeOfStep(Enum):
+    NORMAL = 0
+    ENTRY = 1
+    EXIT = 2
+
 class Position():
     def __init__(self, x, y):
-        self.x = x,
+        self.x = x
         self.y = y

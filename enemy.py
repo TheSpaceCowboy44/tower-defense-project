@@ -2,7 +2,7 @@ from enum import Enum
 import pygame
 from pygame.locals import *
 from settings import *
-from utils import Direction, Position, w12
+from utils import Direction, Position, TypeOfStep, w12
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
@@ -11,39 +11,52 @@ class Enemy(pygame.sprite.Sprite):
         self.image.fill(RED)
         self.direction = Direction.DOWN
         self.health = 1
-        self.route = [EnemyRouteStep(Position(w12(6), SCREEN_HEIGHT + 500), Direction.DOWN, True)]
+        self.route = [EnemyRouteStep(Position(w12(6), SCREEN_HEIGHT + 500, ), Direction.DOWN, True, TypeOfStep.NORMAL)]
+        
     def update(self):
         for i, routeStep in enumerate(self.route):
             if(routeStep.is_active):
                 if(routeStep.direction == Direction.DOWN):
-                    if(self.rect.y <= routeStep.position.y):
+                    if(routeStep.typeOfStep == TypeOfStep.EXIT):
                         self.rect.y = (self.rect.y + self.speed)
-                    elif(self.rect.y > routeStep.position.y):
-                        self.checkRoute(i)
-                        break
+                    else:
+                        if(self.rect.y <= routeStep.position.y):
+                            self.rect.y = (self.rect.y + self.speed)
+                        elif(self.rect.y > routeStep.position.y):
+                            self.checkRoute(i)
+                            break
                 if(routeStep.direction == Direction.UP):
-                    if (self.rect.y >= routeStep.position.y):
+                    if(routeStep.typeOfStep == TypeOfStep.EXIT):
                         self.rect.y = (self.rect.y - self.speed)
-                    elif (self.rect.y < routeStep.position.y):
-                        self.checkRoute(i)
-                        break
+                    else:
+                        if (self.rect.y >= routeStep.position.y):
+                            self.rect.y = (self.rect.y - self.speed)
+                        elif (self.rect.y < routeStep.position.y):
+                            self.checkRoute(i)
+                            break
                 if(routeStep.direction == Direction.RIGHT):
-                    if (self.rect.x <= routeStep.position.x):
+                    if(routeStep.typeOfStep == TypeOfStep.EXIT):
                         self.rect.x = (self.rect.x + self.speed)
-                    elif (self.rect.x > routeStep.position.x):
-                        self.checkRoute(i)
-                        break
+                    else:
+                        if (self.rect.x <= routeStep.position.x):
+                            self.rect.x = (self.rect.x + self.speed)
+                        elif (self.rect.x > routeStep.position.x):
+                            self.checkRoute(i)
+                            break
                 if(routeStep.direction == Direction.LEFT):
-                    if(self.rect.x >= routeStep.position.x):
+                    if(routeStep.typeOfStep == TypeOfStep.EXIT):
                         self.rect.x = (self.rect.x - self.speed)
-                    elif (self.rect.x < routeStep.position.x):
-                        self.checkRoute(i)
-                        break
+                    else:
+                        if(self.rect.x >= routeStep.position.x):
+                            self.rect.x = (self.rect.x - self.speed)
+                        elif (self.rect.x < routeStep.position.x):
+                            self.checkRoute(i)
+                            break
     def draw(self, surface):
         surface.blit(self.image, self.rect.topleft)
     def checkRoute(self, i):
         self.route[i].is_active = False
-        if(self.route[i+1] is not None):
+        if i + 1 < len(self.route) and self.route[i+1] is not None:
             self.route[i+1].is_active = True
 
 class Enemy_Type_1(Enemy):
@@ -92,8 +105,9 @@ class Enemy_Type_3(Enemy):
         surface.blit(self.image, self.rect.topleft)
 
 class EnemyRouteStep():
-    def __init__(self, position, direction, is_active):
+    def __init__(self, position, direction, is_active, typeOfStep):
         self.position = position
         self.direction = direction
         self.is_active = is_active
+        self.typeOfStep = typeOfStep
 

@@ -5,7 +5,7 @@ from pygame.locals import *
 from enemy import *
 import json
 
-from utils import h12, w12
+from utils import TypeOfStep, h12, w12
 
 class MainLevel(pygame.sprite.Sprite):
     def __init__(self, width, height):
@@ -22,6 +22,7 @@ class MainLevel(pygame.sprite.Sprite):
         self.configFile = ''
         self.enemyInfos = []
         self.towerInfos = []
+        self.route_steps = []
         self.gameover = {'state': 'lost', 'hasEnded': False }
         self.timer = pygame .time.get_ticks()
 
@@ -87,7 +88,7 @@ class MainLevel(pygame.sprite.Sprite):
 
     def spawnEnemies(self):
         for enemyData in self.enemyInfos:
-            addEnemy(self, enemyData)
+            self.addEnemy(enemyData)
     def checkGameOver(self):
         if(self.health <= 0):
             now = pygame.time.get_ticks()
@@ -102,39 +103,33 @@ class MainLevel(pygame.sprite.Sprite):
     
     def getRouteSteps(self, routeStepsMap):
         routeSteps = []
-        step = 1
         for y, row in enumerate(routeStepsMap):
             for x, tile in enumerate(row):
-                if(int(tile) == step):
-                    if(step == 1):
-                        isActive = True
-                    else:
-                        isActive = False
-                    routeStep = EnemyRouteStep(Position((x*w12(2), (y*h12(2)))), None, isActive)
-                    routeSteps.append(routeStep)
-                    step +=1
-        for i, step in enumerate(routeSteps):
-            if(step[i+1] is not None):
-                if(step.position.x < routeSteps[i+1].position.x):
-                    step.direction = Direction.RIGHT
-                if(step.position.x > routeSteps[i+1].position.x):
-                    step.direction = Direction.LEFT
-                if(step.position.y < routeSteps[i+1].position.y):
-                    step.direction = Direction.UP
-                if(step.position.y > routeSteps[i+1].position.y):
-                    step.direction = Direction.DOWN
-            else:
-                step.direction = routeSteps[i-1].direction
+                waypoint = tile["wp"]
+                if(int(waypoint[0]) == 1):
+                    isActive = True
+                else:
+                    isActive = False
+                position = Position(x*w12(2), y*h12(2))
+                routeStep = EnemyRouteStep(position, Direction(waypoint[1]), isActive, TypeOfStep(waypoint[2]))
+                routeSteps.append(routeStep)
         return routeSteps
-
-def addEnemy(self, enemy):
-    block_x_pos = self.route_steps[0].position.x
-    spawn_x = random.randint(block_x_pos, block_x_pos + w12(2))
-    enemy = makeEnemy(enemy.enemyType, spawn_x, enemy.spawn_y)
-    if(spawn_x > spawn_x + enemy.rect.width):
-        enemy.rect.x = spawn_x
     
-    self.enemies.add(enemy)
+    def addEnemy(self, enemyData):
+        route = self.getRouteSteps(self.route_steps)
+        pos = getFirstEnemyPathPosition(route)
+        spawn_x = random.randint(pos.x, pos.x + w12(2))
+        enemy = makeEnemy(enemyData.enemyType, spawn_x, enemyData.spawn_y)
+        enemy.route = route
+        if(spawn_x > spawn_x + enemy.rect.width):
+            enemy.rect.x = spawn_x
+        self.enemies.add(enemy)
+
+def getFirstEnemyPathPosition(route):
+    for step in route:
+        if step.typeOfStep == TypeOfStep.ENTRY:
+            return step.position
+
 
 def getEnemyInfosFromJson(json_file):
     enemySpawnDataList = []
