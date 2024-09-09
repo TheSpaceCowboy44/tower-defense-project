@@ -24,7 +24,6 @@ class MainLevel(pygame.sprite.Sprite):
         self.towerInfos = []
         self.gameover = {'state': 'lost', 'hasEnded': False }
         self.timer = pygame .time.get_ticks()
-        self.route_steps = self.getRouteSteps()
 
     def update(self,player):
         player_towers_collisions = pygame.sprite.spritecollide(player, self.towers, False)
@@ -101,9 +100,8 @@ class MainLevel(pygame.sprite.Sprite):
     def reset(self, width, height):
         self.__init__(width, height)
     
-    def getRouteSteps(self):
+    def getRouteSteps(self, routeStepsMap):
         routeSteps = []
-        routeStepsMap = self.getEnemyRouteMap()
         step = 1
         for y, row in enumerate(routeStepsMap):
             for x, tile in enumerate(row):
@@ -164,10 +162,28 @@ def getHealthFromJson(json_file):
     healthDataJson = getItemFromJsonConfig(json_file, 'health')
     return int(healthDataJson)
 
+def getEnemyRouteFromJson(json_file):
+    enemyPath = getItemFromJsonConfig(json_file, 'enemyPath')
+    return enemyPath
+
+def getTileMapFromJson(json_file):
+    tileMap = getItemFromJsonConfig(json_file, 'tileMap')
+    return tileMap
+
 def getItemFromJsonConfig(json_file, data_string):
     with open(json_file, 'r') as file:
         data = json.load(file)
     return data[data_string]
+
+def getAreaBlocks(tileMap):
+    area_blocks = pygame.sprite.Group()
+    for y, row in enumerate(tileMap):
+        for x, tile in enumerate(row):
+            rect = pygame.Rect(x*w12(2), y*h12(2), w12(2), h12(2))
+            block = AreaBlock(rect, AreaBlockType(tile), getBlockColor(tile))
+            area_blocks.add(block)
+    return area_blocks
+
 
 def makeEnemy(enemy_type, spawn_x, spawn_y):
     if enemy_type == 1:
