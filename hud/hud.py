@@ -25,6 +25,7 @@ def MakeHud(font, screen, level, towersInfos, health):
     screen.blit(hud_textHealth, (10, 70))
 
     DisplayEnemyHealthBar(screen, level.enemies)
+    DisplayDebugTools(screen, level)
 
 def DisplayEnemyHealthBar(screen, enemies):
     for enemy in enemies:
@@ -63,3 +64,19 @@ def DisplayGameOverScreen(screen, level):
     health_text = font.render(f"Health: ({level.health}/{level.original_health})", True, WHITE)
     health_rect = health_text.get_rect(center=(w12(6), h12(5)))
     screen.blit(health_text, health_rect)
+
+def DisplayDebugTools(screen, level):
+    
+    for enemy in level.enemies:
+        for i, routeStep in enumerate(enemy.route):
+            block = level.area_blocks.sprites()[i]
+            image = pygame.Surface((int(block.rect.w/3), int(block.rect.h/3)))
+            color = BLACK
+            if(routeStep.is_active):
+                color = GREEN
+            else:
+                color = RED
+            rect = image.get_rect()
+            rect.centerx = block.rect.centerx
+            rect.centery = block.rect.centery
+            pygame.draw.rect(screen, color, rect)

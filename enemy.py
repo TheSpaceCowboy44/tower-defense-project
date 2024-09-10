@@ -1,4 +1,5 @@
 from enum import Enum
+import json
 import pygame
 from pygame.locals import *
 from settings import *
@@ -11,11 +12,12 @@ class Enemy(pygame.sprite.Sprite):
         self.image.fill(RED)
         self.direction = Direction.DOWN
         self.health = 1
-        self.route = [EnemyRouteStep(Position(w12(6), SCREEN_HEIGHT + 500, ), Direction.DOWN, True, TypeOfStep.NORMAL)]
+        self.route = [EnemyRouteStep(Position(w12(6), SCREEN_HEIGHT + 500, ), Direction.DOWN, True, TypeOfStep.ENTRY)]
         
     def update(self):
         for i, routeStep in enumerate(self.route):
             if(routeStep.is_active):
+
                 if(routeStep.direction == Direction.DOWN):
                     if(routeStep.typeOfStep == TypeOfStep.EXIT):
                         self.rect.y = (self.rect.y + self.speed)
@@ -35,6 +37,12 @@ class Enemy(pygame.sprite.Sprite):
                             self.checkRoute(i)
                             break
                 if(routeStep.direction == Direction.RIGHT):
+                    json_data = json.dumps([step.to_dict() for step in self.route], indent=4)
+                    print("###########################################################################################################")
+                    print("###########################################################################################################")
+                    print("###########################################################################################################")
+                    print("###########################################################################################################")
+                    print(json_data)
                     if(routeStep.typeOfStep == TypeOfStep.EXIT):
                         self.rect.x = (self.rect.x + self.speed)
                     else:
@@ -110,4 +118,12 @@ class EnemyRouteStep():
         self.direction = direction
         self.is_active = is_active
         self.typeOfStep = typeOfStep
+    def to_dict(self):
+        return {
+            "pos": f"{self.position.x},{self.position.y}",
+            "dir": self.direction.name,
+            "is_active": self.is_active,
+            "typeOfStep": self.typeOfStep.name
+        }
+
 
