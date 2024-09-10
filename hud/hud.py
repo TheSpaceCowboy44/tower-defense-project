@@ -3,7 +3,7 @@ from pygame.locals import *
 from settings import *
 from utils import w12,h12
 
-def MakeHud(font, screen, level, towersInfos, health):
+def MakeHud(font, screen, level, towersInfos, health, debug_mode):
     textEnemyCount = f"Enemies: {len(level.enemies)}"
     hud_textEnemyCount = font.render(textEnemyCount, True, WHITE)
     screen.blit(hud_textEnemyCount, (10, 10))
@@ -25,7 +25,8 @@ def MakeHud(font, screen, level, towersInfos, health):
     screen.blit(hud_textHealth, (10, 70))
 
     DisplayEnemyHealthBar(screen, level.enemies)
-    DisplayDebugTools(screen, level)
+    if(debug_mode):
+        DisplayDebugTools(screen, level)
 
 def DisplayEnemyHealthBar(screen, enemies):
     for enemy in enemies:
@@ -66,7 +67,6 @@ def DisplayGameOverScreen(screen, level):
     screen.blit(health_text, health_rect)
 
 def DisplayDebugTools(screen, level):
-    
     for enemy in level.enemies:
         for i, routeStep in enumerate(enemy.route):
             block = level.area_blocks.sprites()[i]

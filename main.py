@@ -56,6 +56,8 @@ gameover_buttons = [button_Ok, button_Retry]
 all_buttons = start_menu_buttons + gameover_buttons
 
 level_started = False
+f2_key_pressed = False
+f2_key_is_toggled = False
 game_state = "startmenu"
 
 # Game loop
@@ -88,6 +90,15 @@ while running:
                         elif button.id == "gameover_retry" and game_state == "gameover":
                             level_started = True
                             game_state = "in_game"
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_F2:
+                if not f2_key_pressed: 
+                    f2_key_is_toggled = not f2_key_is_toggled
+                    print(f"DEBUG MODE")
+                    f2_key_pressed = True
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_F2:
+                f2_key_pressed = False
     
     now = pygame.time.get_ticks()
 
@@ -102,7 +113,8 @@ while running:
         current_level.draw(screen)
         player.draw(screen)
         screen.blit(current_level.image, current_level.rect.topleft)
-        MakeHud(font, screen, current_level, current_level.towerInfos, current_level.health)
+
+        MakeHud(font, screen, current_level, current_level.towerInfos, current_level.health, f2_key_is_toggled)
         if current_level.gameover is not None and current_level.gameover.get('hasEnded', False) == True :
             DisplayGameOverScreen(screen, current_level)
             game_state = "gameover"
