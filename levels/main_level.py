@@ -39,6 +39,8 @@ class MainLevel(pygame.sprite.Sprite):
             if(enemy.rect.y > SCREEN_HEIGHT + 20):
                 self.health = self.health - enemy.damage
                 enemy.kill()
+            if(enemy.rect.x > SCREEN_WIDTH + 100 or enemy.rect.x < -100):
+                enemy.kill()
         for tower in self.towers:
             self.checkBulletCollision(tower.bullets, self.enemies)
         self.enemies.update()

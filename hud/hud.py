@@ -4,6 +4,10 @@ from settings import *
 from utils import w12,h12
 
 def MakeHud(font, screen, level, towersInfos, health, debug_mode):
+    DisplayEnemyHealthBar(screen, level.enemies)
+    if(debug_mode):
+        DisplayDebugTools(font, screen, level)
+
     textEnemyCount = f"Enemies: {len(level.enemies)}"
     hud_textEnemyCount = font.render(textEnemyCount, True, WHITE)
     screen.blit(hud_textEnemyCount, (10, 10))
@@ -24,9 +28,6 @@ def MakeHud(font, screen, level, towersInfos, health, debug_mode):
     hud_textHealth = font.render(textHealth, True, WHITE)
     screen.blit(hud_textHealth, (10, 70))
 
-    DisplayEnemyHealthBar(screen, level.enemies)
-    if(debug_mode):
-        DisplayDebugTools(screen, level)
 
 def DisplayEnemyHealthBar(screen, enemies):
     for enemy in enemies:
@@ -66,10 +67,10 @@ def DisplayGameOverScreen(screen, level):
     health_rect = health_text.get_rect(center=(w12(6), h12(5)))
     screen.blit(health_text, health_rect)
 
-def DisplayDebugTools(screen, level):
-    for enemy in level.enemies:
-        for i, routeStep in enumerate(enemy.route):
-            block = level.area_blocks.sprites()[i]
+def DisplayDebugTools(font, screen, level):
+    for i,enemy in enumerate(level.enemies):
+        for y, routeStep in enumerate(enemy.route):
+            block = level.area_blocks.sprites()[y]
             image = pygame.Surface((int(block.rect.w/3), int(block.rect.h/3)))
             color = BLACK
             if(routeStep.is_active):
@@ -80,3 +81,16 @@ def DisplayDebugTools(screen, level):
             rect.centerx = block.rect.centerx
             rect.centery = block.rect.centery
             pygame.draw.rect(screen, color, rect)
+
+        textEnemy = f"enemy {i}"
+        hud_textEnemy = font.render(textEnemy, True, WHITE)
+        screen.blit(hud_textEnemy, (w12(10), 10 + 50 * (i+1)))
+
+        textEnemyHp = f"{enemy.health} hp"
+        hud_textEnemyHp = font.render(textEnemyHp, True, WHITE)
+        screen.blit(hud_textEnemyHp, (w12(10), 25 + 50 * (i+1)))
+
+        textEnemyHp = f"pos: {enemy.rect.x},{enemy.rect.y}"
+        hud_textEnemyHp = font.render(textEnemyHp, True, WHITE)
+        screen.blit(hud_textEnemyHp, (w12(10), 40 + 50 * (i+1)))
+    
