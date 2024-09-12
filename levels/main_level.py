@@ -120,7 +120,7 @@ class MainLevel(pygame.sprite.Sprite):
     def addEnemy(self, enemyData):
         route = self.getRouteSteps(self.route_steps)
         pos = getFirstEnemyPathPosition(route)
-        spawn_x = random.randint(pos.x, pos.x + w12(2))
+        spawn_x = random.randint(pos.x +20, pos.x + w12(2) -20)
         enemy = makeEnemy(enemyData.enemyType, spawn_x, enemyData.spawn_y)
         enemy.route = route
         if(spawn_x > spawn_x + enemy.rect.width):

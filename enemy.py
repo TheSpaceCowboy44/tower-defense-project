@@ -1,5 +1,6 @@
 from enum import Enum
 import json
+import random
 import pygame
 from pygame.locals import *
 from settings import *
@@ -13,20 +14,30 @@ class Enemy(pygame.sprite.Sprite):
         self.direction = Direction.DOWN
         self.health = 1
         self.route = [EnemyRouteStep(Position(w12(6), SCREEN_HEIGHT + 500 ), Direction.DOWN, True, TypeOfStep.ENTRY)]
-        
+        self.hasEnteredRouteStep = False
+        self.randomAxis_Y = None
+        self.randomAxis_X = None
+
     def update(self):
         for i, routeStep in enumerate(self.route):
             if(routeStep.is_active):
                 if(routeStep.typeOfStep == TypeOfStep.EXIT):
                     self.moveInDirection(routeStep.direction)
                 else:
-                    if(checkEnemyRouteCollision(self, routeStep) ):
-                        self.checkRoute(i, i+6)
-                        displayCurrentRouteSteps(self.route)
-                        break
-                    else:
+                    if(checkEnemyRouteStepCollision(self, routeStep)):
+                        self.hasEnteredRouteStep = True
                         self.moveInDirection(routeStep.direction)
-                
+                    elif(self.hasEnteredRouteStep):
+                        self.hasEnteredRouteStep = False
+                        self.moveInDirection(routeStep.direction)
+                    else:
+                        nextIndex = self.getIndexFromDirection(routeStep.direction,i)
+                        nextRouteStep = self.getRouteStepByIndex(nextIndex)
+                        if(nextRouteStep is not None and self.checkEnemyRouteStepCollisionRandomly(nextRouteStep, routeStep.direction)):
+                            self.checkRoute(i, nextIndex)
+                            displayCurrentRouteSteps(self.route)
+                        self.moveInDirection(routeStep.direction)
+
     def draw(self, surface):
         surface.blit(self.image, self.rect.topleft)
     def checkRoute(self, i, nextStepIndex):
@@ -43,7 +54,40 @@ class Enemy(pygame.sprite.Sprite):
             self.rect.x = (self.rect.x + self.speed)
         if(direction == Direction.LEFT):
             self.rect.x = (self.rect.x - self.speed)
-
+    def getIndexFromDirection(self, direction, i):
+        if(direction == Direction.DOWN):
+            return i+6
+        if(direction == Direction.UP):
+            return i-6
+        if(direction == Direction.RIGHT):
+            return i+1
+        if(direction == Direction.LEFT):
+            return i-1
+    def getRouteStepByIndex(self, index):
+        for step in self.route:
+            if(self.route.index(step) == index):
+                return step
+        return None
+    def checkEnemyRouteStepCollisionRandomly(self, routeStep, direction):
+        if(direction == Direction.DOWN or direction == Direction.UP):
+            if(self.randomAxis_Y == None):
+                self.randomAxis_Y = random.randint(routeStep.position.y + ENEMY_PATH_SPACE_DELIMITER, routeStep.position.y + w12(2) - ENEMY_PATH_SPACE_DELIMITER)
+            if(direction == Direction.DOWN and self.rect.y > self.randomAxis_Y ):
+                self.randomAxis_Y = None
+                return True
+            if(direction == Direction.UP and self.rect.y < self.randomAxis_Y ):
+                self.randomAxis_Y = None
+                return True
+        if(direction == Direction.RIGHT or direction == Direction.LEFT):
+            if(self.randomAxis_X == None):
+                self.randomAxis_X = random.randint(routeStep.position.x + ENEMY_PATH_SPACE_DELIMITER, routeStep.position.x + w12(2) - ENEMY_PATH_SPACE_DELIMITER)
+            if(direction == Direction.RIGHT and self.rect.x > self.randomAxis_X ):
+                self.randomAxis_X = None
+                return True
+            if(direction == Direction.LEFT and self.rect.x < self.randomAxis_X ):
+                self.randomAxis_X = None
+                return True
+            
 
 class Enemy_Type_1(Enemy):
     def __init__(self, spawn_x, spawn_y):
@@ -89,7 +133,6 @@ class Enemy_Type_3(Enemy):
         self.damage = ENEMY_TYPE_3_DAMAGE
     def draw(self, surface):
         surface.blit(self.image, self.rect.topleft)
-        
 
 class EnemyRouteStep():
     def __init__(self, position, direction, is_active, typeOfStep):
@@ -106,13 +149,18 @@ class EnemyRouteStep():
         }
 
 
-def checkEnemyRouteCollision(enemy, routeStep):
+def checkEnemyRouteStepCollision(enemy, routeStep):
     check_x_axis = enemy.rect.x > (routeStep.position.x + ENEMY_PATH_SPACE_DELIMITER) and enemy.rect.x < (routeStep.position.x + w12(2) - ENEMY_PATH_SPACE_DELIMITER)
     check_y_axis = enemy.rect.y > (routeStep.position.y + ENEMY_PATH_SPACE_DELIMITER) and enemy.rect.y < (routeStep.position.y + h12(2) - ENEMY_PATH_SPACE_DELIMITER)
+    
     if(check_x_axis and check_y_axis):
         return True
     else:
         return False
+    
+        
+
+        
         
 def displayCurrentRouteSteps(steps):
     for step in steps:
