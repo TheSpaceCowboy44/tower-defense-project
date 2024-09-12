@@ -16,12 +16,13 @@ class Tower_1(pygame.sprite.Sprite):
         self.bullets = pygame.sprite.Group()
         self.spawn_bullet_timer = pygame.time.get_ticks() + 1000
         self.bullet_damage = TOWER_1_BULLET_DAMAGE
+        self.detection_radius = TOWER_1_DETECTION_RADIUS
 
     def update(self, enemies, player):
         now = pygame.time.get_ticks()
         
-        enemy_detected = check_collision_group_circle(self, enemies, TOWER_1_DETECTION_RADIUS)
-        #player_detected = check_collision_circle(self, player, TOWER_1_DETECTION_RADIUS)
+        enemy_detected = check_collision_group_circle(self, enemies, self.detection_radius)
+        #player_detected = check_collision_circle(self, player, self.detection_radius)
         if enemy_detected != False:
             self.highlight_detection_circle = True
             if enemy_detected != False and now > self.spawn_bullet_timer:
@@ -34,13 +35,13 @@ class Tower_1(pygame.sprite.Sprite):
 
         for bullet in self.bullets:
             bullet.update()
-            if(not check_collision_circle(self, bullet, TOWER_1_DETECTION_RADIUS)):
+            if(not check_collision_circle(self, bullet, self.detection_radius)):
                bullet.kill()
 
     def draw(self, surface):
         if self.highlight_detection_circle:
             circle_center = (self.rect.centerx, self.rect.centery)
-            pygame.draw.circle(surface, GREEN, circle_center, TOWER_1_DETECTION_RADIUS, 2)
+            pygame.draw.circle(surface, GREEN, circle_center, self.detection_radius, 2)
 
         for bullet in self.bullets:
             bullet.draw(surface)

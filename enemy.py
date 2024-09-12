@@ -157,9 +157,6 @@ def checkEnemyRouteStepCollision(enemy, routeStep):
         return True
     else:
         return False
-    
-        
-
         
         
 def displayCurrentRouteSteps(steps):

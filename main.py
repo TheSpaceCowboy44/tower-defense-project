@@ -6,8 +6,9 @@ import sys
 from button import Button
 from fake_block import FakeBlock
 from levels.level_0.level_0 import Level_0
-from settings import *
 from levels.level_1.level_1 import Level_1
+from levels.level_2.level_2 import Level_2
+from settings import *
 from player import Player
 from hud.hud import DisplayGameOverScreen, MakeHud
 from utils import w12,h12
@@ -18,6 +19,8 @@ def chooseCurrentLevel(level_name):
         return Level_0(SCREEN_WIDTH, SCREEN_HEIGHT)
     if(level_name == "level_1"):
         return Level_1(SCREEN_WIDTH, SCREEN_HEIGHT)
+    if(level_name == "level_2"):
+        return Level_2(SCREEN_WIDTH, SCREEN_HEIGHT)
 
 
 # Initialize Pygame

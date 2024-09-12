@@ -1,0 +1,124 @@
+{
+    "displayName": "Niveau 2 - ",
+    "enemySpawnData":
+    [
+        {
+            "enemyType": 1,
+            "spawn_y": -50
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -100
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -200
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -220
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -250
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -300
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -320
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -340
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -350
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -380
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -400
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -50
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -100
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -200
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -220
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -250
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -300
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -320
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -340
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -350
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -380
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -400
+        }
+        
+    ],
+    "towersData":
+    [
+        {
+            "tower_1": 6
+        },
+        {
+            "tower_2": 2
+        },
+        {
+            "tower_3": 0
+        }
+    ],
+    "health": 120,
+    "enemyPath": [
+        [{"wp": [0,2,0] }, {"wp": [0,2,0] }, {"wp": [1,2,1] }, {"wp": [0,2,0] }, {"wp": [0,2,0] }, {"wp": [0,2,0] }],
+        [{"wp": [0,2,0] }, {"wp": [0,2,0] }, {"wp": [0,4,0] }, {"wp": [0,2,0] }, {"wp": [0,2,0] }, {"wp": [0,2,0] }],
+        [{"wp": [0,2,0] }, {"wp": [0,2,0] }, {"wp": [0,2,0] }, {"wp": [0,3,0] }, {"wp": [0,3,0] }, {"wp": [0,2,0] }],
+        [{"wp": [0,2,0] }, {"wp": [0,3,0] }, {"wp": [0,3,0] }, {"wp": [0,1,0] }, {"wp": [0,2,0] }, {"wp": [0,2,0] }],
+        [{"wp": [0,2,0] }, {"wp": [0,2,0] }, {"wp": [0,2,0] }, {"wp": [0,2,0] }, {"wp": [0,2,0] }, {"wp": [0,2,0] }],
+        [{"wp": [0,2,0] }, {"wp": [0,2,0] }, {"wp": [0,2,0] }, {"wp": [0,2,0] }, {"wp": [0,2,0] }, {"wp": [0,2,2] }]
+    ],
+    "tileMap": [
+        [0, 0, 1, 0, 0, 0],
+        [0, 1, 1, 0, 0, 0],
+        [0, 1, 0, 1, 1, 1],
+        [0, 1, 1, 1, 0, 1],
+        [0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 1]
+    ]
+}

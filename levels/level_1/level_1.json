@@ -5,6 +5,22 @@
         {
             "enemyType": 1,
             "spawn_y": -50
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -100
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -200
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -220
+        },
+        {
+            "enemyType": 1,
+            "spawn_y": -250
         }
         
     ],
