@@ -21,8 +21,19 @@
         {
             "enemyType": 1,
             "spawn_y": -250
+        },
+        {
+            "enemyType": 2,
+            "spawn_y": -500
+        },
+        {
+            "enemyType": 2,
+            "spawn_y": -800
+        },
+        {
+            "enemyType": 3,
+            "spawn_y": -1000
         }
-        
     ],
     "towersData":
     [
@@ -33,7 +44,7 @@
             "tower_2": 1
         },
         {
-            "tower_3": 0
+            "tower_3": 1
         }
     ],
     "health": 100,

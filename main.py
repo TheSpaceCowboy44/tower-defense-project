@@ -1,7 +1,7 @@
 import os
+import sys
 import pygame
 from pygame.locals import *
-import sys
 
 from button import Button
 from fake_block import FakeBlock
@@ -11,17 +11,15 @@ from levels.level_2.level_2 import Level_2
 from settings import *
 from player import Player
 from hud.hud import DisplayGameOverScreen, MakeHud
-from utils import w12,h12
+from utils import Level, w12,h12
 
-
-def chooseCurrentLevel(level_name):
-    if(level_name == "level_0"):
+def chooseCurrentLevel(level):
+    if(level == Level.LEVEL_0.value):
         return Level_0(SCREEN_WIDTH, SCREEN_HEIGHT)
-    if(level_name == "level_1"):
+    if(level == Level.LEVEL_1.value):
         return Level_1(SCREEN_WIDTH, SCREEN_HEIGHT)
-    if(level_name == "level_2"):
+    if(level == Level.LEVEL_2.value):
         return Level_2(SCREEN_WIDTH, SCREEN_HEIGHT)
-
 
 # Initialize Pygame
 pygame.init()
@@ -37,8 +35,7 @@ for level in levels_directory:
     if("level_" in level):
         levels.append(level)
 
-current_level_name = levels[0]
-current_level = chooseCurrentLevel(current_level_name)
+current_level = chooseCurrentLevel(0)
 
 font = pygame.font.Font(None, 20)
 
@@ -86,7 +83,7 @@ while running:
                                 for start_menu_button in start_menu_buttons:
                                     start_menu_button.background_color = GRAY
                                 button.background_color = GREEN
-                                current_level = chooseCurrentLevel(f"level_{i}")
+                                current_level = chooseCurrentLevel(i)
                         if button.id == "gameover_menu" and game_state == "gameover":
                             level_started = False
                             game_state = "startmenu"

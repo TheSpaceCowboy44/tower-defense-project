@@ -1,7 +1,6 @@
 import random
 import pygame
 from pygame.locals import *
-
 from settings import *
 from utils import *
 
@@ -12,10 +11,10 @@ class Tower_1(pygame.sprite.Sprite):
         self.image.fill(LIGHTBLUE)
         self.rect = self.image.get_rect(center=(x, y))
         self.highlight_detection_circle = False
-        self.bullet_images = [pygame.Surface((2, 8))]
+        self.bullet_images = [pygame.Surface((BULLET_1_SIZE, BULLET_1_SIZE))]
         self.bullets = pygame.sprite.Group()
         self.spawn_bullet_timer = pygame.time.get_ticks() + 1000
-        self.bullet_damage = TOWER_1_BULLET_DAMAGE
+        self.bullet_damage = BULLET_1_DAMAGE
         self.detection_radius = TOWER_1_DETECTION_RADIUS
 
     def update(self, enemies, player):
@@ -26,10 +25,10 @@ class Tower_1(pygame.sprite.Sprite):
         if enemy_detected != False:
             self.highlight_detection_circle = True
             if enemy_detected != False and now > self.spawn_bullet_timer:
-                bullet_angle = calculer_angle(self.rect.x, self.rect.y, enemy_detected.rect.x, enemy_detected.rect.y)
-                bullet = TowerBullet(self, bullet_angle)
+                shooting_angle = calculer_angle(self.rect.x, self.rect.y, enemy_detected.rect.x, enemy_detected.rect.y)
+                bullet = TowerBullet(self, shooting_angle)
                 self.bullets.add(bullet)
-                self.spawn_bullet_timer = now + TOWER_1_BULLET_TIMER
+                self.spawn_bullet_timer = now + BULLET_1_TIMER
         else:
             self.highlight_detection_circle = False
 
@@ -52,7 +51,7 @@ class TowerBullet(pygame.sprite.Sprite):
         super().__init__()
         self.original_image = tower.bullet_images[0]
         self.image = pygame.transform.rotate(self.original_image, -angle)
-        self.image.fill(TOWER_1_BULLET_COLOR)
+        self.image.fill(BULLET_1_COLOR)
         self.rect = self.image.get_rect(center=(tower.rect.centerx, tower.rect.centery))
         self.position = pygame.math.Vector2(tower.rect.centerx, tower.rect.centery)
         self.velocity = pygame.math.Vector2(0, 0)

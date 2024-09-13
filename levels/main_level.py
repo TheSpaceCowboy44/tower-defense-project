@@ -42,7 +42,8 @@ class MainLevel(pygame.sprite.Sprite):
             if(enemy.rect.x > SCREEN_WIDTH + 100 or enemy.rect.x < -100):
                 enemy.kill()
         for tower in self.towers:
-            self.checkBulletCollision(tower.bullets, self.enemies)
+            if hasattr(tower, 'bullets') and tower.bullets is not None:
+                self.checkBulletCollision(tower.bullets, self.enemies)
         self.enemies.update()
         player.update(self)
         self.gameover = self.checkGameOver()

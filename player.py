@@ -1,8 +1,10 @@
 import pygame
 from pygame.locals import *
 from settings import *
-from towers.tower_2 import Tower_2
 from towers.tower_1 import Tower_1
+from towers.tower_2 import Tower_2
+from towers.tower_3 import Tower_3
+from utils import TowerType
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
@@ -35,18 +37,12 @@ class Player(pygame.sprite.Sprite):
         if pressed_keys[K_1] or pressed_keys[K_2] or pressed_keys[K_3]:
             for tower_data in current_level.towerInfos:
                 if tower_data.towerType == 1 and tower_data.numberOf > 0 and pressed_keys[K_1] and self.can_place_tower:
-                    new_tower = Tower_1(self.rect.centerx, self.rect.centery)
-                    current_level.towers.add(new_tower)
-                    tower_data.numberOf -= 1
-                    self.can_place_tower = False
-                    break
+                    self.spawnTower(current_level, tower_data, TowerType.TOWER_1)
                 if tower_data.towerType == 2 and tower_data.numberOf > 0 and pressed_keys[K_2] and self.can_place_tower:
-                    new_tower = Tower_2(self.rect.centerx, self.rect.centery)
-                    current_level.towers.add(new_tower)
-                    tower_data.numberOf -= 1
-                    self.can_place_tower = False
-                    break
-                    
+                    self.spawnTower(current_level, tower_data, TowerType.TOWER_2)
+                if tower_data.towerType == 3 and tower_data.numberOf > 0 and pressed_keys[K_3] and self.can_place_tower:
+                    self.spawnTower(current_level, tower_data, TowerType.TOWER_3)
+
     def draw(self, surface):
         surface.blit(self.image, self.rect.topleft)
     def checkWallCollision(self):
@@ -58,3 +54,14 @@ class Player(pygame.sprite.Sprite):
             self.rect.y = 0
         if(self.rect.y > (SCREEN_HEIGHT-PLAYER_SIZE)):
             self.rect.y = SCREEN_HEIGHT-PLAYER_SIZE
+    def spawnTower(self, current_level, tower_data, tower_type):
+        new_tower = Tower_1(self.rect.centerx, self.rect.centery)
+        if(tower_type == TowerType.TOWER_1):
+            new_tower = Tower_1(self.rect.centerx, self.rect.centery)
+        if(tower_type == TowerType.TOWER_2):
+            new_tower = Tower_2(self.rect.centerx, self.rect.centery)
+        if(tower_type == TowerType.TOWER_3):
+            new_tower = Tower_3(self.rect.centerx, self.rect.centery)
+        current_level.towers.add(new_tower)
+        tower_data.numberOf -= 1
+        self.can_place_tower = False

@@ -108,9 +108,9 @@ class Enemy_Type_2(Enemy):
     def __init__(self, spawn_x, spawn_y):
         super().__init__()
         self.image = pygame.Surface((SCREEN_WIDTH*0.03, SCREEN_WIDTH*0.03))
-        self.image.fill(RED)
+        self.image.fill(ORANGE_LIGHT)
         self.rect = self.image.get_rect()
-        self.speed = 8
+        self.speed = 1
         self.rect.x = spawn_x
         self.rect.y = spawn_y
         self.health = ENEMY_TYPE_2_HEALTH
@@ -123,9 +123,9 @@ class Enemy_Type_3(Enemy):
     def __init__(self, spawn_x, spawn_y):
         super().__init__()
         self.image = pygame.Surface((SCREEN_WIDTH*0.04, SCREEN_WIDTH*0.04))
-        self.image.fill(RED)
+        self.image.fill(GREEN_GRASS_DARK)
         self.rect = self.image.get_rect()
-        self.speed = 10
+        self.speed = 1
         self.rect.x = spawn_x
         self.rect.y = spawn_y
         self.health = ENEMY_TYPE_3_HEALTH

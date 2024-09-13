@@ -62,6 +62,16 @@ class TypeOfStep(Enum):
     ENTRY = 1
     EXIT = 2
 
+class TowerType(Enum):
+    TOWER_1 = 1
+    TOWER_2 = 2
+    TOWER_3 = 3
+
+class Level(Enum):
+    LEVEL_0 = 0
+    LEVEL_1 = 1
+    LEVEL_2 = 2
+
 class Position():
     def __init__(self, x, y):
         self.x = x
